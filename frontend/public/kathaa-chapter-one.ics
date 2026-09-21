@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Kathaa//Chapter One//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:chapter-one-20261211@kathaa.com.au
+DTSTAMP:20260921T000000Z
+DTSTART:20261211T074000Z
+DTEND:20261211T120000Z
+SUMMARY:Kathaa Live · Chapter One
+DESCRIPTION:An evening on Sydney Harbour. Arrive by 6:40pm — the vessel will not wait. Bring physical government-issued photo ID. https://kathaa.com.au/chapter-one
+LOCATION:Sydney Harbour
+URL:https://kathaa.com.au/chapter-one
+END:VEVENT
+END:VCALENDAR
