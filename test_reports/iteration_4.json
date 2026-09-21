@@ -1,0 +1,43 @@
+{
+  "summary": "Focused re-test of hero label overlap fix from iteration_3. Verified at viewports 320, 359, and 390 that .hero-location and .scroll-cue no longer intersect, are both visible, and neither overlaps .masthead-tagline. No horizontal overflow at any of the three widths.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "measurements": {
+    "320": {
+      "hero_location": {"x": 20, "y": 704.64, "w": 147.09, "h": 43.36},
+      "scroll_cue":    {"x": 146.19, "y": 635.94, "w": 153.81, "h": 48.06},
+      "tagline":       {"x": 109, "y": 500.16, "w": 102, "h": 29.02},
+      "intersections": {"hero_scroll": false, "scroll_tagline": false, "hero_tagline": false},
+      "horizontal_overflow": false
+    },
+    "359": {
+      "hero_location": {"x": 20, "y": 704.64, "w": 147.09, "h": 43.36},
+      "scroll_cue":    {"x": 185.19, "y": 635.94, "w": 153.81, "h": 48.06},
+      "tagline":       {"x": 128.5, "y": 513.16, "w": 102, "h": 29.02},
+      "intersections": {"hero_scroll": false, "scroll_tagline": false, "hero_tagline": false},
+      "horizontal_overflow": false
+    },
+    "390": {
+      "hero_location": {"x": 20, "y": 704.64, "w": 147.09, "h": 43.36},
+      "scroll_cue":    {"x": 216.19, "y": 699.94, "w": 153.81, "h": 48.06},
+      "tagline":       {"x": 144, "y": 523.48, "w": 102, "h": 29.02},
+      "intersections": {"hero_scroll": false, "scroll_tagline": false, "hero_tagline": false},
+      "horizontal_overflow": false,
+      "note": "scroll-cue bottom placement unchanged vs iteration_3 baseline (media query only affects <=359px)."
+    }
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "100%"},
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Hero label overlap issue at narrow widths (<=359px) resolved via @media(max-width:359px){.scroll-cue{bottom:6rem}}. Confirmed at 320/359/390. Only overlap-focused re-test performed per request; no other flows re-run.",
+  "rca of the issue": "At <=359px the .scroll-cue at its default bottom offset visually overlapped .hero-location. Raising bottom to 6rem inside a max-width:359px media query lifts the cue above the location line at narrow viewports while leaving 390+ untouched. Verified via bounding-box intersection tests."
+}
