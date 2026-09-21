@@ -7,13 +7,13 @@ import { Reveal, Words } from "@/components/Reveal";
 export const Standard = () => (
   <section className="section page-section" data-chapter="IV" data-testid="standard-section">
     <div className="wrap">
-      <ChapterHead numeral="IV" sanskrit={eyebrows.home.standard.sa} title="The Kathaa Standard" />
+      <ChapterHead sanskrit={eyebrows.home.standard.sa} title="The Kathaa Standard" />
       <div className="standard-grid">
         <Reveal as="p" className="standard-line" stagger={0.05}>
-          <Words text="Considered production. Warm hospitality. Details that don't shout." />
+          <Words text="You are a guest, not a ticket holder." />
         </Reveal>
         <Reveal as="p" className="standard-note">
-          We'd rather host fewer, better nights than many forgettable ones.
+          The room is ready before you arrive, the sound is right, and nobody is hurried. Fewer nights. Better ones.
         </Reveal>
       </div>
     </div>
@@ -23,7 +23,7 @@ export const Standard = () => (
 export const Chapters = () => (
   <section className="section" data-chapter="V" data-testid="chapters-section">
     <div className="wrap">
-      <ChapterHead numeral="V" sanskrit={eyebrows.home.chapters.sa} title="The Chapters" />
+      <ChapterHead sanskrit={eyebrows.home.chapters.sa} title="The Chapters" />
       <div className="chapters-grid">
         <Reveal>
           {published ? (
@@ -58,7 +58,7 @@ export const Chapters = () => (
 export const Partnerships = () => (
   <section className="section--tight" data-chapter="VI" data-testid="partnerships-section">
     <div className="wrap">
-      <ChapterHead numeral="VI" sanskrit={eyebrows.home.partnerships.sa} title="Partnerships" />
+      <ChapterHead sanskrit={eyebrows.home.partnerships.sa} title="Partnerships" />
       <Reveal as="p" className="display">
         Brands that want to be part of the story, not just beside it.
       </Reveal>

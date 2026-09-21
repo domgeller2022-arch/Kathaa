@@ -3,6 +3,14 @@ import { useLocation } from "react-router-dom";
 import { ScrollTrigger } from "@/lib/motion";
 import { useIntro } from "@/components/Providers";
 
+/**
+ * Chapters are keyed by Roman numeral in data-chapter (the CSS pigment
+ * selectors depend on it), but the thread displays Devanagari digits —
+ * the numbers a Nepali reader actually counts in.
+ */
+const NEPALI = { I: "\u0967", II: "\u0968", III: "\u0969", IV: "\u096A", V: "\u096B", VI: "\u096C", VII: "\u096D" };
+const nepali = (n) => NEPALI[n] || n;
+
 export const Thread = () => {
   const { pathname } = useLocation();
   const { introDone } = useIntro();
@@ -86,7 +94,7 @@ export const Thread = () => {
           style={{ top: `${n.pos * 100}%` }}
           ref={(el) => (nodeRefs.current[i] = el)}
         >
-          <span className="thread-numeral">{n.numeral}</span>
+          <span className="thread-numeral" lang="ne">{nepali(n.numeral)}</span>
         </div>
       ))}
     </div>

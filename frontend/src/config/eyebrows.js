@@ -12,7 +12,7 @@
 
 export const eyebrows = {
   home: {
-    premise:      { sa: "प्रस्तावना", en: "A new initiative from Pravaha House" },
+    premise:      { sa: "प्रस्तावना", en: "An initiative of Pravaha House" },
     nowShowing:   { sa: "अध्यायः एक", en: "Kathaa Live presents · Chapter One" },
     unfolds:      { sa: "कथा-क्रम",   en: "How a Kathaa evening unfolds" },
     standard:     { sa: "मानक",       en: "The Kathaa Standard" },

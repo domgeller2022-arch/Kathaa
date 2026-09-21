@@ -55,7 +55,6 @@ export const Unfolds = () => {
     <section className="section--tight" data-chapter="III" data-testid="unfolds-section">
       <div className="wrap">
         <ChapterHead
-          numeral="III"
           sanskrit={eyebrows.home.unfolds.sa}
           title="How a Kathaa evening unfolds"
         />

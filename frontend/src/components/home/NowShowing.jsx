@@ -59,40 +59,67 @@ export const ArtistBlock = ({ revealed = ARTIST_REVEALED, showLine = true }) => 
 
 const YearRewind = () => {
   const stage = useRef(null);
-  const [label, setLabel] = useState(prefersReducedMotion() ? "2000s" : "2026");
-  const [settled, setSettled] = useState(prefersReducedMotion());
+  const numRef = useRef(null);
+  const reduced = prefersReducedMotion();
+  const [label, setLabel] = useState(reduced ? "2000s" : "2026");
+  const [settled, setSettled] = useState(reduced);
+  const [spinning, setSpinning] = useState(false);
 
   useEffect(() => {
-    if (prefersReducedMotion()) return undefined;
+    if (reduced) return undefined;
+
+    // One motion, not one year per scroll step. Entering the section fires a
+    // timed rewind that runs 2026 back through the years and lands on 2000s —
+    // a tape spooling back, rather than a counter being nudged. Scroll only
+    // triggers it; it does not scrub it.
+    const counter = { year: 2026 };
+    let tl;
+
     const st = ScrollTrigger.create({
       trigger: stage.current,
-      start: "top top",
-      end: "bottom bottom",
-      onUpdate: (self) => {
-        const p = self.progress;
-        if (p >= 0.9) {
-          setLabel("2000s");
-          setSettled(true);
-        } else {
-          const eased = gsap.parseEase("power2.out")(p / 0.9);
-          setLabel(String(2026 - Math.round(eased * 25)));
-          setSettled(false);
-        }
+      start: "top 30%",
+      once: true,
+      onEnter: () => {
+        setSpinning(true);
+        tl = gsap.timeline({
+          onComplete: () => {
+            setSpinning(false);
+            setLabel("2000s");
+            setSettled(true);
+          },
+        });
+        tl.to(counter, {
+          year: 2000,
+          duration: 1.45,
+          // Slow off the mark, tear through the middle, ease into the landing.
+          ease: "power3.inOut",
+          onUpdate: () => setLabel(String(Math.round(counter.year))),
+        });
       },
     });
-    return () => st.kill();
-  }, []);
+
+    return () => {
+      tl?.kill();
+      st.kill();
+    };
+  }, [reduced]);
 
   return (
     <div className="rewind-stage" ref={stage} data-testid="year-rewind">
       <div className="rewind-pin">
-        <p className={`year ${settled ? "chrome-dusk is-sweeping" : ""}`} aria-live="off" data-testid="year-counter">
+        <p
+          ref={numRef}
+          className={`year ${spinning ? "is-spinning" : ""} ${settled ? "chrome-dusk is-sweeping" : ""}`}
+          aria-live="off"
+          data-testid="year-counter"
+        >
           {label}
         </p>
       </div>
     </div>
   );
 };
+
 
 export const NowShowing = ({ published = PUBLISHED }) => {
   if (!published) return null;

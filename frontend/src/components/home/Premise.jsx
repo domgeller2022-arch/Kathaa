@@ -6,8 +6,8 @@ import { eyebrows } from "@/config/eyebrows";
 
 const LINES = [
   "Most nights out give you the songs.",
-  "Kathaa gives you the story behind them.",
-  "Every artist we bring to the stage carries a history — the town they grew up in, the song that almost wasn't released, the decade that shaped their sound. We build the whole evening around that story, so that when the first note lands, you already know why it matters.",
+  "Kathaa lets the artist tell you where they came from.",
+  "Every song carries a place and a year — the town it was written in, the night it almost wasn't recorded, the decade that shaped the voice singing it. The evening is built around that telling. By the time the first note lands, you already know why it matters.",
   "Kathaa means story. Ours is just beginning.",
 ];
 

@@ -31,6 +31,12 @@
      anything unassigned falls back to the original brand. */
   --accent: var(--gold);
   --accent-deep: var(--gold-deep);
+
+  /* Chapter grounds — deep enough that ivory clears 13.9:1 on all four. */
+  --ground-ember: #2a1a0c;   /* marigold chapters */
+  --ground-plum: #2b1220;    /* laligurans chapters */
+  --ground-indigo: #161033;  /* the blue hour */
+  --ground-teal: #062320;    /* night water */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --font-deva: "Rozha One", "Noto Serif Devanagari", serif;
   --font-sc: "Cormorant SC", "Cormorant Garamond", Georgia, serif;
@@ -1374,16 +1380,26 @@ html[data-page-theme="ivory"] .nav-menu-btn {
 .page-section .eyebrow,
 .eyebrow--ink { color: var(--accent-deep); }
 
-/* ── The wash ──────────────────────────────────────────────────────────
-   A single very soft pool of the chapter's colour bleeding in from one
-   edge, at 8–10%. The ground stays ink: this reads as coloured LIGHT
-   falling across a dark room, not as a coloured panel. Ivory text over the
-   strongest wash still measures 13.4:1, so nothing is at risk. */
+/* ── Chromatic grounds ─────────────────────────────────────────────────
+   Each chapter sits on its own deep pigment rather than on shared ink.
+   The 10% washes this replaces were measurably invisible — a mean pixel
+   delta of 10/255 against the previous build. Ivory reads 13.9-15.3:1 on
+   every ground below and smoke 7.2-8.0:1, so nothing is at risk.
+   Type stays ivory throughout: the GROUND carries the colour, not the
+   words. That is the line between vibrant and gaudy. */
 .section,
 .section--tight { position: relative; }
 .section > *,
 .section--tight > * { position: relative; z-index: 1; }
 
+[data-chapter="I"]:not(.page-section),
+[data-chapter="VI"]:not(.page-section)  { background: var(--ground-ember); }
+[data-chapter="II"]:not(.page-section),
+[data-chapter="VII"]:not(.page-section) { background: var(--ground-plum); }
+[data-chapter="III"]:not(.page-section) { background: var(--ground-indigo); }
+[data-chapter="V"]:not(.page-section)   { background: var(--ground-teal); }
+
+/* A faint lift from one corner so a ground reads as lit, not painted. */
 .section::before,
 .section--tight::before {
   content: "";
@@ -1392,34 +1408,29 @@ html[data-page-theme="ivory"] .nav-menu-btn {
   pointer-events: none;
   z-index: 0;
   background: radial-gradient(
-    120% 70% at 88% 12%,
-    color-mix(in srgb, var(--accent) 10%, transparent) 0%,
-    transparent 62%
+    120% 70% at 88% 10%,
+    color-mix(in srgb, var(--accent) 12%, transparent) 0%,
+    transparent 64%
   );
 }
-/* Alternate the side the light falls from, so scrolling feels like moving
-   past windows rather than down a list. */
 .section:nth-of-type(even)::before,
 .section--tight:nth-of-type(even)::before {
   background: radial-gradient(
     120% 70% at 6% 88%,
-    color-mix(in srgb, var(--accent) 9%, transparent) 0%,
-    transparent 60%
-  );
-}
-/* Ivory pages get the faintest possible tint — they must still read as paper. */
-.page-section::before {
-  background: radial-gradient(
-    120% 70% at 88% 10%,
-    color-mix(in srgb, var(--accent-deep) 5%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 11%, transparent) 0%,
     transparent 62%
   );
 }
+.page-section::before { background: none; }
 @supports not (background: color-mix(in srgb, red 10%, transparent)) {
   .section::before,
-  .section--tight::before,
-  .page-section::before { background: none; }
+  .section--tight::before { background: none; }
 }
+
+/* Cards sit DOWN into their ground rather than floating on ink. */
+.chapter-card,
+.know-panel,
+.slot-frame { background: rgba(0, 0, 0, 0.28); }
 
 /* ══════════════════════════════════════════════════════════════════════
    THE THREAD CARRIES THE PALETTE
@@ -1554,12 +1565,17 @@ html[data-page-theme="ivory"] .nav-menu-btn {
   }
 }
 
-/* Panels inside Unfolds each own a hue, so the horizontal scroll moves
-   through the palette rather than repeating one colour four times. */
-.unfold-page:nth-child(1) { --accent: var(--marigold); }
-.unfold-page:nth-child(2) { --accent: var(--laligurans); }
-.unfold-page:nth-child(3) { --accent: var(--violet); }
-.unfold-page:nth-child(4) { --accent: var(--teal); }
+/* Each Unfolds panel is its own room: the horizontal scroll moves through
+   four grounds rather than four accents on one ground, which keeps the
+   one-chapter-one-pigment rule intact while the section still travels. */
+.unfold-page:nth-child(1) { --accent: var(--marigold);   background: var(--ground-ember); }
+.unfold-page:nth-child(2) { --accent: var(--laligurans); background: var(--ground-plum); }
+.unfold-page:nth-child(3) { --accent: var(--violet);     background: var(--ground-indigo); }
+.unfold-page:nth-child(4) { --accent: var(--teal);       background: var(--ground-teal); }
+.unfold-page { border-top: 0; }
+@media (min-width: 1024px) {
+  .unfolds.is-horizontal .unfold-page { border-left: 0; }
+}
 
 /* Cards and panels pick up the chapter accent. */
 .chapter-card { border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
@@ -1588,3 +1604,33 @@ html[data-page-theme="ivory"] .nav-menu-btn {
 .gold { color: var(--accent); }
 .page-section .gold { color: var(--accent-deep); }
 .details dd.gold { color: var(--accent); }
+
+/* ── The rewind ───────────────────────────────────────────────────────
+   The stage no longer needs 260vh of scroll to scrub through: the rewind
+   is a timed motion triggered on entry, so the section is a normal height.
+   Blur and a slight vertical smear while the digits spool sell the tape
+   feel; both clear the moment it lands. */
+.rewind-stage { height: 150vh; }
+.year {
+  transition:
+    filter 0.35s var(--ease),
+    transform 0.35s var(--ease);
+}
+.year.is-spinning {
+  filter: blur(2.5px);
+  transform: scaleY(1.06);
+}
+@media (prefers-reduced-motion: reduce) {
+  .year.is-spinning { filter: none; transform: none; }
+  .rewind-stage { height: auto; padding: 4rem 0; }
+}
+
+/* ── Thread numerals in Devanagari ────────────────────────────────────
+   Devanagari digits need a touch more room and sit differently on the
+   baseline than Roman numerals did. */
+.thread-numeral {
+  font-family: var(--font-deva);
+  font-style: normal;
+  font-size: 1.15rem;
+  line-height: 1;
+}

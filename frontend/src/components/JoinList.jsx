@@ -34,7 +34,6 @@ export const JoinList = ({ numeral = "VII" }) => {
     <section className="section" id="list" data-chapter={numeral} data-testid="join-list-section">
       <div className="wrap join-layout">
         <ChapterHead
-          numeral={numeral}
           sanskrit={eyebrows.home.joinList.sa}
           eyebrow={eyebrows.home.joinList.en}
           title="Be the first to hear the next chapter."
