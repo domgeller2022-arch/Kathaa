@@ -24,7 +24,9 @@ export const IntroProvider = ({ children }) => {
 export const SmoothScroll = () => {
   useEffect(() => {
     if (prefersReducedMotion()) return undefined;
-    const lenis = new Lenis({ lerp: 0.08 });
+    // lerp 0.08 was slower than Lenis's own default and read as sluggish.
+    // 0.16 keeps the glide but lets the page track the wheel closely.
+    const lenis = new Lenis({ lerp: 0.16, wheelMultiplier: 1.05, touchMultiplier: 1.6 });
     window.__lenis = lenis;
     lenis.on("scroll", ScrollTrigger.update);
     const raf = (time) => lenis.raf(time * 1000);

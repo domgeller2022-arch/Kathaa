@@ -11,32 +11,14 @@
   --sindoor: #b23a26;
   --smoke: #8a8f99;
 
-  /* ── Chapter pigments ───────────────────────────────────────────────
-     Lamplight on dark water. Each chapter owns ONE hue, which appears in
-     exactly four places: its numeral, its Devanagari eyebrow, its hairline
-     rule, and the soft wash behind it. Never in body copy, never as a
-     background fill — that is what keeps it sophisticated rather than loud.
-     Bright values are for ink grounds; -deep values for the ivory pages.
-     Every pair is AA at small sizes; see the contrast table in the PR. */
-  --marigold: #e8a24a;        /* सयपत्री — the strung flower. 8.65:1 on ink */
-  --marigold-deep: #8a5a16;   /* 4.98:1 on ivory */
-  --laligurans: #e0658c;      /* लालीगुराँस — Nepal's rhododendron. 5.71:1 */
-  --laligurans-deep: #a32f55; /* 5.72:1 on ivory */
-  --violet: #a78be8;          /* the blue hour. 6.69:1 on ink */
-  --violet-deep: #5b3fa0;     /* 6.65:1 on ivory */
-  --teal: #4fc3b8;            /* harbour water after dark. 8.76:1 on ink */
-  --teal-deep: #116b64;       /* 5.35:1 on ivory */
-
-  /* The accent a section is currently speaking in. Defaults to gold so
-     anything unassigned falls back to the original brand. */
+  /* The accent the current section is speaking in. */
   --accent: var(--gold);
   --accent-deep: var(--gold-deep);
 
-  /* Chapter grounds — deep enough that ivory clears 13.9:1 on all four. */
-  --ground-ember: #2a1a0c;   /* marigold chapters */
-  --ground-plum: #2b1220;    /* laligurans chapters */
-  --ground-indigo: #161033;  /* the blue hour */
-  --ground-teal: #062320;    /* night water */
+  /* One family, light to dark. The ramp lives in the section rules below. */
+  --mint: #7fd4c9;       /* accent on the dark half — 9.8:1 at the top */
+  --teal-deep: #0e5b55;  /* accent on the light half — 6.3:1 at the turn */
+  --ink-warm: #0e1a18;   /* type on the light half; warmer than pure ink */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --font-deva: "Rozha One", "Noto Serif Devanagari", serif;
   --font-sc: "Cormorant SC", "Cormorant Garamond", Georgia, serif;
@@ -160,26 +142,34 @@ button {
 }
 
 /* Custom cursor */
+/* The wrapper is driven by GSAP and carries NO transform transition —
+   that 0.4s was stacking on top of the tween and doubling the lag. The
+   inner dot keeps the eased hover scale. */
 .cursor {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 300;
-  width: 8px;
-  height: 8px;
-  margin: -4px 0 0 -4px;
-  border-radius: 50%;
-  background: var(--gold);
   pointer-events: none;
-  transition:
-    transform 0.4s var(--ease),
-    opacity 0.4s var(--ease);
   opacity: 0;
+  transition: opacity 0.3s var(--ease);
+  will-change: transform;
 }
 .cursor.is-visible {
   opacity: 1;
 }
-.cursor.is-active {
+.cursor-dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: var(--accent);
+  transition:
+    transform 0.28s var(--ease),
+    opacity 0.28s var(--ease);
+}
+.cursor.is-active .cursor-dot {
   transform: scale(4);
   opacity: 0.55;
 }
@@ -1351,20 +1341,6 @@ html[data-page-theme="ivory"] .nav-menu-btn {
   border: 0;
 }
 
-/* ══════════════════════════════════════════════════════════════════════
-   CHAPTER PIGMENT SYSTEM
-   Sections already carry data-chapter, so the hue cascades with no JSX
-   change. The sequence is an evening: lamp gold, marigold, laligurans,
-   the blue hour, then night water.
-   ══════════════════════════════════════════════════════════════════════ */
-[data-chapter="I"]   { --accent: var(--marigold);   --accent-deep: var(--marigold-deep); }
-[data-chapter="II"]  { --accent: var(--laligurans); --accent-deep: var(--laligurans-deep); }
-[data-chapter="III"] { --accent: var(--violet);     --accent-deep: var(--violet-deep); }
-[data-chapter="IV"]  { --accent: var(--gold);       --accent-deep: var(--gold-deep); }
-[data-chapter="V"]   { --accent: var(--teal);       --accent-deep: var(--teal-deep); }
-[data-chapter="VI"]  { --accent: var(--marigold);   --accent-deep: var(--marigold-deep); }
-[data-chapter="VII"] { --accent: var(--laligurans); --accent-deep: var(--laligurans-deep); }
-
 /* On an ivory page the deep pigment is the readable one. */
 .page-section { --accent: var(--accent-deep); }
 
@@ -1380,57 +1356,96 @@ html[data-page-theme="ivory"] .nav-menu-btn {
 .page-section .eyebrow,
 .eyebrow--ink { color: var(--accent-deep); }
 
-/* ── Chromatic grounds ─────────────────────────────────────────────────
-   Each chapter sits on its own deep pigment rather than on shared ink.
-   The 10% washes this replaces were measurably invisible — a mean pixel
-   delta of 10/255 against the previous build. Ivory reads 13.9-15.3:1 on
-   every ground below and smoke 7.2-8.0:1, so nothing is at risk.
-   Type stays ivory throughout: the GROUND carries the colour, not the
-   words. That is the line between vibrant and gaudy. */
+/* ── The ramp ──────────────────────────────────────────────────────────
+   One family, one direction. The page starts at deep navy-green and
+   lightens as you scroll, turning at The Kathaa Standard and arriving
+   near-white at the invitation. No hue jumps: every ground is the same
+   blue-green, only lighter, so the change reads as dawn rather than as
+   four unrelated rooms.
+
+   Each section's gradient ENDS on the next section's start colour, so
+   adjacent sections meet seamlessly whatever their heights.
+
+   Mid-luminance greens fail both ivory and ink, so the ramp steps over
+   that zone in one move at the III/IV boundary — the turn into the light.
+   Dark half: ivory 14.3-9.3:1, smoke 7.9-5.1:1.
+   Light half: ink 14.2-17.1:1, smoke 5.4-6.5:1. */
 .section,
 .section--tight { position: relative; }
 .section > *,
 .section--tight > * { position: relative; z-index: 1; }
 
-[data-chapter="I"]:not(.page-section),
-[data-chapter="VI"]:not(.page-section)  { background: var(--ground-ember); }
-[data-chapter="II"]:not(.page-section),
-[data-chapter="VII"]:not(.page-section) { background: var(--ground-plum); }
-[data-chapter="III"]:not(.page-section) { background: var(--ground-indigo); }
-[data-chapter="V"]:not(.page-section)   { background: var(--ground-teal); }
+[data-chapter="I"]   { background: linear-gradient(180deg, #08201e, #0c2825); }
+[data-chapter="II"]  { background: linear-gradient(180deg, #0c2825, #123430); }
+[data-chapter="III"] { background: linear-gradient(180deg, #123430, #1a433d); }
+[data-chapter="IV"]  { background: linear-gradient(180deg, #dce8e5, #e2ece9); }
+[data-chapter="V"]   { background: linear-gradient(180deg, #e2ece9, #e9f2f0); }
+[data-chapter="VI"]  { background: linear-gradient(180deg, #e9f2f0, #eff6f4); }
+[data-chapter="VII"] { background: linear-gradient(180deg, #eff6f4, #f7fbfa); }
 
-/* A faint lift from one corner so a ground reads as lit, not painted. */
-.section::before,
-.section--tight::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background: radial-gradient(
-    120% 70% at 88% 10%,
-    color-mix(in srgb, var(--accent) 12%, transparent) 0%,
-    transparent 64%
-  );
-}
-.section:nth-of-type(even)::before,
-.section--tight:nth-of-type(even)::before {
-  background: radial-gradient(
-    120% 70% at 6% 88%,
-    color-mix(in srgb, var(--accent) 11%, transparent) 0%,
-    transparent 62%
-  );
-}
-.page-section::before { background: none; }
-@supports not (background: color-mix(in srgb, red 10%, transparent)) {
-  .section::before,
-  .section--tight::before { background: none; }
+/* The dark half keeps ivory type and a light secondary. */
+[data-chapter="I"],
+[data-chapter="II"],
+[data-chapter="III"] {
+  --accent: var(--mint);
+  --smoke: #9fb5b1;
+  color: var(--page);
 }
 
-/* Cards sit DOWN into their ground rather than floating on ink. */
-.chapter-card,
-.know-panel,
-.slot-frame { background: rgba(0, 0, 0, 0.28); }
+/* From the turn onward the type goes to ink and the secondary darkens. */
+[data-chapter="IV"],
+[data-chapter="V"],
+[data-chapter="VI"],
+[data-chapter="VII"] {
+  --accent: var(--teal-deep);
+  --smoke: #4c5f5b;
+  color: var(--ink-warm);
+}
+[data-chapter="IV"] :is(h1,h2,h3,.chapter-title,.display,.lead,.standard-line,.manifesto p),
+[data-chapter="V"] :is(h1,h2,h3,.chapter-title,.display,.lead,.standard-line),
+[data-chapter="VI"] :is(h1,h2,h3,.chapter-title,.display,.lead),
+[data-chapter="VII"] :is(h1,h2,h3,.chapter-title,.display,.lead,.form-success) {
+  color: var(--ink-warm);
+}
+[data-chapter="IV"] .smoke, [data-chapter="V"] .smoke,
+[data-chapter="VI"] .smoke, [data-chapter="VII"] .smoke,
+[data-chapter="IV"] .body, [data-chapter="V"] .body,
+[data-chapter="VI"] .body, [data-chapter="VII"] .body,
+[data-chapter="IV"] .hint, [data-chapter="V"] .hint,
+[data-chapter="VI"] .hint, [data-chapter="VII"] .hint,
+[data-chapter="IV"] .standard-note { color: var(--smoke); }
+
+[data-chapter="IV"] .k-btn, [data-chapter="V"] .k-btn,
+[data-chapter="VI"] .k-btn, [data-chapter="VII"] .k-btn {
+  color: var(--ink-warm);
+  border-color: var(--accent);
+}
+[data-chapter="IV"] .k-btn:hover, [data-chapter="V"] .k-btn:hover,
+[data-chapter="VI"] .k-btn:hover, [data-chapter="VII"] .k-btn:hover,
+[data-chapter="IV"] .k-btn:focus-visible, [data-chapter="V"] .k-btn:focus-visible,
+[data-chapter="VI"] .k-btn:focus-visible, [data-chapter="VII"] .k-btn:focus-visible { color: #f7fbfa; }
+[data-chapter="VII"] .field input { color: var(--ink-warm); }
+
+/* Cards sit down into their ground on the dark half, and lift off it on
+   the light half. */
+.chapter-card { background: rgba(0, 0, 0, 0.22); }
+[data-chapter="V"] .chapter-card {
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--ink-warm);
+}
+[data-chapter="V"] .chapter-card h3 { color: var(--ink-warm); }
+.blank-page { background: #fbfdfc; }
+
+/* Unfolds panels step through the same family rather than sitting on
+   four unrelated hues. */
+.unfold-page:nth-child(1) { background: #0e2c28; }
+.unfold-page:nth-child(2) { background: #133530; }
+.unfold-page:nth-child(3) { background: #183e37; }
+.unfold-page:nth-child(4) { background: #1d4740; }
+.unfold-page { --accent: var(--mint); --smoke: #9fb5b1; border-top: 0; }
+@media (min-width: 1024px) {
+  .unfolds.is-horizontal .unfold-page { border-left: 0; }
+}
 
 /* ══════════════════════════════════════════════════════════════════════
    THE THREAD CARRIES THE PALETTE
@@ -1443,19 +1458,18 @@ html[data-page-theme="ivory"] .nav-menu-btn {
   transform: none !important;
   background: linear-gradient(
     180deg,
-    var(--gold) 0%,
-    var(--marigold) 18%,
-    var(--laligurans) 38%,
-    var(--violet) 56%,
-    var(--gold) 68%,
-    var(--teal) 84%,
-    var(--laligurans) 100%
+    var(--mint) 0%,
+    #8fdad0 24%,
+    #a9e3db 46%,
+    #1f6d66 58%,
+    var(--teal-deep) 74%,
+    #0b4a45 100%
   );
   clip-path: inset(0 0 100% 0);
-  opacity: 0.85;
+  opacity: 0.9;
   will-change: clip-path;
 }
-.thread-node { background: var(--gold); }
+.thread-node { background: var(--accent); }
 
 /* ── Mobile: get the thread off the masthead ───────────────────────────
    At 50% it ran straight through कथा, through the H of KATHAA and through
@@ -1565,18 +1579,6 @@ html[data-page-theme="ivory"] .nav-menu-btn {
   }
 }
 
-/* Each Unfolds panel is its own room: the horizontal scroll moves through
-   four grounds rather than four accents on one ground, which keeps the
-   one-chapter-one-pigment rule intact while the section still travels. */
-.unfold-page:nth-child(1) { --accent: var(--marigold);   background: var(--ground-ember); }
-.unfold-page:nth-child(2) { --accent: var(--laligurans); background: var(--ground-plum); }
-.unfold-page:nth-child(3) { --accent: var(--violet);     background: var(--ground-indigo); }
-.unfold-page:nth-child(4) { --accent: var(--teal);       background: var(--ground-teal); }
-.unfold-page { border-top: 0; }
-@media (min-width: 1024px) {
-  .unfolds.is-horizontal .unfold-page { border-left: 0; }
-}
-
 /* Cards and panels pick up the chapter accent. */
 .chapter-card { border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
 .chapter-card:hover,
@@ -1611,17 +1613,22 @@ html[data-page-theme="ivory"] .nav-menu-btn {
    Blur and a slight vertical smear while the digits spool sell the tape
    feel; both clear the moment it lands. */
 .rewind-stage { height: 150vh; }
+/* No blur. A CSS filter on type this large forces the browser to
+   rasterise it, which is why the digits looked like they dropped
+   resolution mid-spin. Speed is carried by a slight vertical stretch and
+   a small opacity drop instead — both composited, both sharp. */
 .year {
   transition:
-    filter 0.35s var(--ease),
-    transform 0.35s var(--ease);
+    transform 0.3s var(--ease),
+    opacity 0.3s var(--ease);
+  will-change: transform;
 }
 .year.is-spinning {
-  filter: blur(2.5px);
-  transform: scaleY(1.06);
+  transform: scaleY(1.045);
+  opacity: 0.88;
 }
 @media (prefers-reduced-motion: reduce) {
-  .year.is-spinning { filter: none; transform: none; }
+  .year.is-spinning { transform: none; opacity: 1; }
   .rewind-stage { height: auto; padding: 4rem 0; }
 }
 
@@ -1634,3 +1641,26 @@ html[data-page-theme="ivory"] .nav-menu-btn {
   font-size: 1.15rem;
   line-height: 1;
 }
+
+/* ── Both ends of the ramp ─────────────────────────────────────────────
+   The masthead sits above chapter I, so the page ground must BE the
+   ramp's first stop or the hero reads as a different blue from the
+   section beneath it. */
+html,
+body { background: #08201e; }
+
+/* And the footer is the ramp's last stop, not a return to night — going
+   back to dark after arriving in the light undoes the whole journey. */
+.footer {
+  background: #f7fbfa;
+  color: #4c5f5b;
+  border-top-color: rgba(14, 91, 85, 0.25);
+}
+.footer a,
+.footer span,
+.footer-links a,
+.footer-links span { color: var(--ink-warm); }
+.footer .logo-deva { color: var(--ink-warm); }
+.footer .logo-sc { color: var(--teal-deep); }
+.footer .k-link { background-image: linear-gradient(var(--teal-deep), var(--teal-deep)); }
+.footer-ack { color: #4c5f5b; }

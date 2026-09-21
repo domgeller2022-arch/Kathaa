@@ -59,7 +59,6 @@ export const ArtistBlock = ({ revealed = ARTIST_REVEALED, showLine = true }) => 
 
 const YearRewind = () => {
   const stage = useRef(null);
-  const numRef = useRef(null);
   const reduced = prefersReducedMotion();
   const [label, setLabel] = useState(reduced ? "2000s" : "2026");
   const [settled, setSettled] = useState(reduced);
@@ -68,38 +67,46 @@ const YearRewind = () => {
   useEffect(() => {
     if (reduced) return undefined;
 
-    // One motion, not one year per scroll step. Entering the section fires a
-    // timed rewind that runs 2026 back through the years and lands on 2000s —
-    // a tape spooling back, rather than a counter being nudged. Scroll only
-    // triggers it; it does not scrub it.
+    // One motion, not one year per scroll step — but reversible. The
+    // timeline is built once and then played or reversed by the scroll
+    // direction, so scrolling back up spools forward to 2026 and coming
+    // down again rewinds to 2000s.
     const counter = { year: 2026 };
-    let tl;
-
-    const st = ScrollTrigger.create({
-      trigger: stage.current,
-      start: "top 30%",
-      once: true,
-      onEnter: () => {
+    const tl = gsap.timeline({
+      paused: true,
+      onStart: () => setSpinning(true),
+      onComplete: () => {
+        setSpinning(false);
+        setLabel("2000s");
+        setSettled(true);
+      },
+      onReverseComplete: () => {
+        setSpinning(false);
+        setLabel("2026");
+        setSettled(false);
+      },
+    });
+    tl.to(counter, {
+      year: 2000,
+      duration: 1.35,
+      // Slow off the mark, tear through the middle, ease into the landing.
+      ease: "power3.inOut",
+      onUpdate: () => {
+        setSettled(false);
         setSpinning(true);
-        tl = gsap.timeline({
-          onComplete: () => {
-            setSpinning(false);
-            setLabel("2000s");
-            setSettled(true);
-          },
-        });
-        tl.to(counter, {
-          year: 2000,
-          duration: 1.45,
-          // Slow off the mark, tear through the middle, ease into the landing.
-          ease: "power3.inOut",
-          onUpdate: () => setLabel(String(Math.round(counter.year))),
-        });
+        setLabel(String(Math.round(counter.year)));
       },
     });
 
+    const st = ScrollTrigger.create({
+      trigger: stage.current,
+      start: "top 45%",
+      onEnter: () => tl.play(),
+      onLeaveBack: () => tl.reverse(),
+    });
+
     return () => {
-      tl?.kill();
+      tl.kill();
       st.kill();
     };
   }, [reduced]);
@@ -108,7 +115,6 @@ const YearRewind = () => {
     <div className="rewind-stage" ref={stage} data-testid="year-rewind">
       <div className="rewind-pin">
         <p
-          ref={numRef}
           className={`year ${spinning ? "is-spinning" : ""} ${settled ? "chrome-dusk is-sweeping" : ""}`}
           aria-live="off"
           data-testid="year-counter"
@@ -119,6 +125,7 @@ const YearRewind = () => {
     </div>
   );
 };
+
 
 
 export const NowShowing = ({ published = PUBLISHED }) => {
