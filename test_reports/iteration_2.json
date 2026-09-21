@@ -1,0 +1,24 @@
+{
+  "summary": "Frontend-only verification of the KATHAA bilingual-eyebrows + brighter-palette + Framer Motion redesign across desktop (1440) and mobile (390). All bilingual eyebrows are present, non-empty and lang='ne' on Home (premise-heading, now-showing-heading, heading-how-a-kathaa-evening-unfolds, heading-the-kathaa-standard, heading-the-chapters, heading-partnerships, chapter-card-one, heading-be-the-first-to-hear-the-next-chapter, plus the 4 unfold-* devanagari), on Chapter One (chapter-one-hero-heading, the-story, the-artist, on-the-water, the-evening, questions-people-ask, join-list) and on Our Story (the-held-note='दीर्घ स्वर', pravaha-house='प्रवाह हाउस', why-we-started='हाम्रो सुरुवात'). Devanagari renders in gold ROZHA-One serif above the English heading with the animated rule; no clipped vowel marks observed at both viewports. Masthead still shows कथा (lang='ne'), GSAP intro completes, Framer parallax on hero-orbit and masthead-float coexists with Lenis (no runtime errors, only a benign Lenis 'non-static container position' warning). Home horizontal Unfolds pin scrolls through all four panels on desktop (unfold-i..iv x positions step by ~1008px inside pinned track) and stacks vertically on mobile (y increases: 336 → 727 → 1146 → 1537); document.scrollWidth == innerWidth on both viewports (no page-wide horizontal overflow). Marquee toggle flips aria-pressed false→true and adds .is-paused class; join list mock success renders 'Thank you...' after 700ms MOCK wait. Chapter One FAQ item 1 opens (aria-expanded=true); add-to-calendar href = '/kathaa-chapter-one.ics'. Bright ivory surfaces render as expected on ChapterOne 'The story' and OurStory 'Pravaha House' with dark navy text — contrast is legible. No forbidden words (yacht, party, charity, fundraiser, donation) in body innerText. No console errors captured across navigations.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Console warning from Lenis: 'Please ensure that the container has a non-static position (relative/fixed/absolute) to ensure scroll offset is calculated correctly.' Not user-facing, but adding position:relative to the Lenis root/wrapper would silence it and avoid subtle offset issues on some browsers.",
+    "ChapterOne renders <ShareRow /> twice (hero + FAQ section) producing duplicate data-testid values (share-actions, page-join-list, share-whatsapp, add-to-calendar). Pre-existing per handoff note, but strict e2e frameworks will need scoped locators. Consider suffixing the second occurrence (e.g. share-actions-bottom) for cleaner testability.",
+    "site.js flags published/artistRevealed remain true — pre-launch brand-only requirement should be re-confirmed with directors (carried over from iteration_1)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped per request)", "frontend": "100%"},
+  "test_credentials": "N/A (public frontend, no auth). /app/memory/test_credentials.md is an empty template as expected.",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Bilingual eyebrow test-ids follow two patterns: (a) auto slug 'heading-<english-title-slug>-devanagari' from ChapterHead, (b) custom ids for home custom heads (premise-heading-devanagari, now-showing-heading-devanagari, chapter-one-hero-heading-devanagari, chapter-card-one-devanagari) and unfold-<i|ii|iii|iv>-devanagari. Framer + GSAP + Lenis all coexist cleanly. Bright screenshots captured at /tmp/ch1-story.png and /tmp/os-pravaha.png during this run (ephemeral). Mocked signup shows success after 700ms — do not assert on real API.",
+  "rca of the issue": "No user-facing issues found."
+}

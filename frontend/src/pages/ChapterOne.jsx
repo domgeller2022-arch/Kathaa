@@ -11,14 +11,14 @@ import { Gallery, EveningDetails, KnowBefore } from "@/components/chapter/Detail
 
 const shareText = `Kathaa Live presents Chapter One — ${chapterOne.title}. ${chapterOne.dateLabel}, ${chapterOne.descriptor.toLowerCase()}.`;
 
-const ShareRow = () => (
-  <div className="actions" data-testid="share-actions">
+const ShareRow = ({ suffix = "" }) => (
+  <div className="actions" data-testid={`share-actions${suffix}`}>
     {TICKET_URL ? (
-      <a href={TICKET_URL} target="_blank" rel="noreferrer" className="k-btn k-btn--solid" data-testid="page-get-tickets">
+      <a href={TICKET_URL} target="_blank" rel="noreferrer" className="k-btn k-btn--solid" data-testid={`page-get-tickets${suffix}`}>
         Get tickets →
       </a>
     ) : (
-      <button type="button" className="k-btn" onClick={() => scrollToId("list")} data-testid="page-join-list">
+      <button type="button" className="k-btn" onClick={() => scrollToId("list")} data-testid={`page-join-list${suffix}`}>
         Join the list
       </button>
     )}
@@ -27,11 +27,11 @@ const ShareRow = () => (
       target="_blank"
       rel="noreferrer"
       className="k-btn"
-      data-testid="share-whatsapp"
+      data-testid={`share-whatsapp${suffix}`}
     >
       Share on WhatsApp
     </a>
-    <a href={chapterOne.icsPath} download="kathaa-chapter-one.ics" className="k-btn" data-testid="add-to-calendar">
+    <a href={chapterOne.icsPath} download="kathaa-chapter-one.ics" className="k-btn" data-testid={`add-to-calendar${suffix}`}>
       Add to calendar
     </a>
   </div>
@@ -152,7 +152,7 @@ export default function ChapterOne() {
             <Faq />
           </Reveal>
           <Reveal className="mt-16">
-            <ShareRow />
+            <ShareRow suffix="-bottom" />
           </Reveal>
         </div>
       </section>
