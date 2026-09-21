@@ -1,10 +1,15 @@
 import { useEffect, useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { gsap, EASE, isDesktop, prefersReducedMotion } from "@/lib/motion";
 import { TAGLINE } from "@/config/site";
 import { useIntro } from "@/components/Providers";
 
 export const Prologue = () => {
   const root = useRef(null);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: root, offset: ["start start", "end start"] });
+  const mastheadY = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const orbitRotate = useTransform(scrollYProgress, [0, 1], [-18, 12]);
   const { introDone, finishIntro } = useIntro();
   const played = useRef(introDone);
 
@@ -58,6 +63,11 @@ export const Prologue = () => {
 
   return (
     <section ref={root} className="prologue" aria-label="Prologue" data-testid="prologue">
+      <motion.div className="hero-orbit" style={{ rotate: reduced ? -18 : orbitRotate }} aria-hidden="true">
+        <span className="hero-orbit-inner" />
+        <span className="hero-orbit-note" />
+      </motion.div>
+      <motion.div className="masthead-float" style={{ y: reduced ? 0 : mastheadY }}>
       <div className="masthead">
         <h1 className="masthead-word" lang="ne" data-testid="masthead-word">
           <span className="shirorekha" aria-hidden="true" />
@@ -72,8 +82,10 @@ export const Prologue = () => {
           {TAGLINE}
         </p>
       </div>
+      </motion.div>
+      <p className="hero-location" data-testid="hero-location">Sydney, Australia <span>Live experiences</span></p>
       <p className="scroll-cue" aria-hidden="true">
-        Scroll
+        Scroll to begin <span>↓</span>
       </p>
     </section>
   );

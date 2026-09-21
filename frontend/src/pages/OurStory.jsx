@@ -49,7 +49,7 @@ export default function OurStory() {
 
       <section className="section--tight" data-chapter="I" data-testid="held-note-section">
         <div className="wrap">
-          <ChapterHead numeral="I" title="The held note" />
+          <ChapterHead numeral="I" devanagari="दीर्घ स्वर" title="The held note" />
           <div className="event-grid" style={{ marginTop: 0, alignItems: "start" }}>
             <div>
               <HeldNote />
@@ -70,7 +70,7 @@ export default function OurStory() {
 
       <section className="section page-section" data-chapter="II" data-testid="pravaha-house-section">
         <div className="wrap">
-          <ChapterHead numeral="II" title="Pravaha House" />
+          <ChapterHead numeral="II" devanagari="प्रवाह हाउस" title="Pravaha House" />
           <Reveal as="p" className="lead">
             Kathaa is an initiative of <span className="eyebrow eyebrow--ink" style={{ display: "inline", marginBottom: 0 }}>Pravaha House</span>, a
             Sydney company creating live experiences that carry culture forward.
@@ -78,9 +78,9 @@ export default function OurStory() {
         </div>
       </section>
 
-      <section className="section" data-chapter="III" data-testid="why-we-started-section">
+      <section className="section page-section" data-chapter="III" data-testid="why-we-started-section">
         <div className="wrap">
-          <ChapterHead numeral="III" title="Why we started" />
+          <ChapterHead numeral="III" devanagari="हाम्रो सुरुवात" title="Why we started" />
           <Reveal as="blockquote" className="display" style={{ fontStyle: "italic", borderLeft: "1px solid var(--gold)", paddingLeft: "1.5rem" }} data-testid="founders-story">
             [FOUNDERS' STORY — to be written by the directors]
           </Reveal>

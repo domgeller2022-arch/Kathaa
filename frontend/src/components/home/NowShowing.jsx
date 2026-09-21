@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { gsap, ScrollTrigger, prefersReducedMotion, scrollToId } from "@/lib/motion";
 import { chapterOne, TICKET_URL, artistRevealed as ARTIST_REVEALED, published as PUBLISHED } from "@/config/site";
 import { Reveal } from "@/components/Reveal";
+import { BilingualEyebrow } from "@/components/ChapterHead";
 import { MediaSlot } from "@/components/MediaSlot";
 
 export const TicketCta = ({ secondary = true }) => (
@@ -96,13 +97,11 @@ export const NowShowing = ({ published = PUBLISHED }) => {
   if (!published) return null;
   const { heroMedia } = chapterOne;
   return (
-    <section className="relative" data-chapter="II" data-testid="now-showing-section">
+    <section className="relative now-showing" data-chapter="II" data-testid="now-showing-section">
       <YearRewind />
       <div className="section" style={{ paddingTop: 0 }}>
        <div className="wrap">
-        <Reveal as="p" className="eyebrow" y={12}>
-          Kathaa Live presents · Chapter One
-        </Reveal>
+        <BilingualEyebrow devanagari="अध्याय एक" english="Kathaa Live presents · Chapter One" testId="now-showing-heading" />
         <Reveal as="h2" className="event-title chrome-dusk is-sweeping" data-testid="chapter-one-title">
           {chapterOne.title}
         </Reveal>

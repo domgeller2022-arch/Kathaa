@@ -1,7 +1,7 @@
 import { usePageMeta } from "@/lib/meta";
 import { chapterOne, published, artistRevealed, TICKET_URL } from "@/config/site";
 import { scrollToId } from "@/lib/motion";
-import { ChapterHead } from "@/components/ChapterHead";
+import { ChapterHead, BilingualEyebrow } from "@/components/ChapterHead";
 import { Reveal } from "@/components/Reveal";
 import { JoinList } from "@/components/JoinList";
 import { Footer } from "@/components/Footer";
@@ -40,7 +40,7 @@ const ShareRow = () => (
 const ComingSoon = () => (
   <section className="section" style={{ minHeight: "100svh", display: "flex", alignItems: "center" }} data-testid="chapter-one-coming-soon">
     <div className="wrap">
-      <p className="eyebrow">Kathaa Live presents</p>
+      <BilingualEyebrow devanagari="अध्याय एक" english="Kathaa Live presents" testId="chapter-one-coming-soon-heading" />
       <h1 className="chapter-title">Chapter One — coming soon</h1>
       <div className="mt-10">
         <TicketCta secondary={false} />
@@ -68,11 +68,9 @@ export default function ChapterOne() {
 
   return (
     <div data-testid="chapter-one-page">
-      <section className="section" style={{ minHeight: "88svh", display: "flex", alignItems: "center" }} data-testid="chapter-one-hero">
+      <section className="section chapter-hero" style={{ minHeight: "88svh", display: "flex", alignItems: "center" }} data-testid="chapter-one-hero">
         <div className="wrap">
-          <Reveal as="p" className="eyebrow" y={12}>
-            Kathaa Live presents · Chapter One
-          </Reveal>
+          <BilingualEyebrow devanagari="अध्याय एक" english="Kathaa Live presents · Chapter One" testId="chapter-one-hero-heading" />
           <Reveal as="h1" className="event-title chrome-dusk is-sweeping" data-testid="chapter-one-page-title">
             {chapterOne.title}
           </Reveal>
@@ -85,9 +83,9 @@ export default function ChapterOne() {
         </div>
       </section>
 
-      <section className="section--tight" data-chapter="I" data-testid="the-story-section">
+      <section className="section--tight page-section" data-chapter="I" data-testid="the-story-section">
         <div className="wrap">
-          <ChapterHead numeral="I" title="The story" />
+          <ChapterHead numeral="I" devanagari="कथा" title="The story" />
           <Reveal as="p" className="display">
             Before streaming, there was the FM dial, the cassette rewound with a pencil, the song you waited all week to
             hear again. On 11 December, one of the voices that defined that decade tells the story behind the songs —
@@ -97,9 +95,9 @@ export default function ChapterOne() {
         </div>
       </section>
 
-      <section className="section" data-chapter="II" data-testid="the-artist-section">
+      <section className="section page-section" data-chapter="II" data-testid="the-artist-section">
         <div className="wrap">
-          <ChapterHead numeral="II" title="The artist" />
+          <ChapterHead numeral="II" devanagari="कलाकार" title="The artist" />
           <div className="event-grid" style={{ marginTop: 0, alignItems: "start" }}>
             <div style={{ maxWidth: "24rem" }}>
               <ArtistBlock revealed={artistRevealed} showLine={false} />
@@ -130,14 +128,14 @@ export default function ChapterOne() {
 
       <section className="section--tight" data-chapter="III" data-testid="on-the-water-section">
         <div className="wrap">
-          <ChapterHead numeral="III" title="On the water" />
+          <ChapterHead numeral="III" devanagari="जलयात्रा" title="On the water" />
           <Gallery />
         </div>
       </section>
 
       <section className="section" data-chapter="IV" data-testid="the-evening-section">
         <div className="wrap">
-          <ChapterHead numeral="IV" title="The evening" />
+          <ChapterHead numeral="IV" devanagari="साँझ" title="The evening" />
           <Reveal>
             <EveningDetails />
           </Reveal>
@@ -147,9 +145,9 @@ export default function ChapterOne() {
         </div>
       </section>
 
-      <section className="section--tight" data-chapter="V" data-testid="faq-section">
+      <section className="section--tight page-section sunlit-section" data-chapter="V" data-testid="faq-section">
         <div className="wrap">
-          <ChapterHead numeral="V" title="Questions people ask" />
+          <ChapterHead numeral="V" devanagari="जिज्ञासा" title="Questions people ask" />
           <Reveal>
             <Faq />
           </Reveal>

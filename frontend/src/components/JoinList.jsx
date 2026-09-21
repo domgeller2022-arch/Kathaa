@@ -30,9 +30,9 @@ export const JoinList = ({ numeral = "VII" }) => {
   };
 
   return (
-    <section className="section" id="list" data-chapter={numeral} data-testid="join-list-section">
-      <div className="wrap">
-        <ChapterHead numeral={numeral} title="Be the first to hear the next chapter." />
+    <section className="section page-section sunlit-section" id="list" data-chapter={numeral} data-testid="join-list-section">
+      <div className="wrap join-layout">
+        <ChapterHead numeral={numeral} devanagari="अर्को अध्याय" eyebrow="Join the list" title="Be the first to hear the next chapter." />
         {status === "done" ? (
           <p className="form-success" role="status" data-testid="join-list-success">
             Thank you. You'll hear from us when the next chapter is ready.
@@ -77,7 +77,7 @@ export const JoinList = ({ numeral = "VII" }) => {
               <span>Send me news about Kathaa events. Unsubscribe anytime.</span>
             </label>
             <div className="actions">
-              <button type="submit" className="k-btn" disabled={status === "sending"} data-testid="join-list-submit">
+              <button type="submit" className="k-btn k-btn--submit" disabled={status === "sending"} data-testid="join-list-submit">
                 {status === "sending" ? "Joining…" : "Join the list"}
               </button>
               {status === "error" && (

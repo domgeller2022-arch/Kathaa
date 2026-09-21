@@ -4,7 +4,7 @@ import { Prologue } from "@/components/home/Prologue";
 import { Premise } from "@/components/home/Premise";
 import { NowShowing } from "@/components/home/NowShowing";
 import { Unfolds } from "@/components/home/Unfolds";
-import { Standard, Chapters, Partnerships } from "@/components/home/Sections";
+import { Standard, Chapters, Partnerships, StoryMarquee } from "@/components/home/Sections";
 import { JoinList } from "@/components/JoinList";
 import { Footer } from "@/components/Footer";
 
@@ -20,6 +20,7 @@ export default function Home() {
       <NowShowing />
       <Unfolds />
       <Standard />
+      <StoryMarquee />
       <Chapters />
       <Partnerships />
       <JoinList />

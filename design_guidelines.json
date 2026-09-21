@@ -1,0 +1,197 @@
+{
+  "project_name": "Kathaa Marketing SPA",
+  "design_vision": "Award-worthy, vibrant, and bright editorial design for Kathaa (कथा). Blends Sydney harbour dusk warmth with rich Devanagari typography, golden thread micro-interactions, Framer Motion masked reveals, and bilingual chapter eyebrows that mirror the hero masthead.",
+  "original_problem_statement": "Bilingual Eyebrows: Give each chapter heading a small Devanagari eyebrow above the English, like the masthead does. also lets change the design language a little bit. make the website bit more vibrant. more bright.",
+  "user_choices": "Small Devanagari eyebrows above English chapter headings matching masthead; a slightly changed, more vibrant and bright design language with precise light/ivory and rich dark surface alternating.",
+  "vibrant_bright_surface_treatments": {
+    "philosophy": "To deliver a clearly brighter and more vibrant experience while keeping the 'a little bit' editorial aesthetic shift, we replace monolithic deep navy backgrounds with a dynamic rhythm of luminous warm ivory (#fdfbf7), lustrous dusk indigo (#121a2d), and golden radiant accents (#e5b869).",
+    "home_page": {
+      "hero_prologue": {
+        "surface": "Lustrous Dusk Midnight (#121a2d) with radial gold & amethyst ambient glow (#e5b869, #d8beed)",
+        "treatment": "Hero masthead features Devanagari 'कथा' with animated golden shirorekha line draw and subtle 2.5D parallax hero float. Vibrant chrome dusk gradient text effect on the year rewind.",
+        "text_contrast": "Ivory (#fdfbf7) and Primary Gold (#e5b869)"
+      },
+      "premise_manifesto": {
+        "surface": "Vibrant Warm Ivory (#f7f2e8) 'Page' Section",
+        "treatment": "High contrast light section providing immediate brightness after dusk hero. Deep Charcoal ink text (#0f172a) with Deep Gold (#8f6527) chapter eyebrows and Sindoor Red (#d13824) numeral accents.",
+        "text_contrast": "Deep Ink (#0f172a)"
+      },
+      "chapter_one_now_showing": {
+        "surface": "Deep Navy Night (#14213a) with Chrome Dusk Sheen",
+        "treatment": "Sticky 2000s rewind stage with glowing chrome dusk sheen text animation and vibrant media slot borders with golden ambient glow.",
+        "text_contrast": "Bright Ivory (#fdfbf7) and Gold (#e5b869)"
+      },
+      "unfolds_horizontal_track": {
+        "surface": "Alternating Warm Ivory (#f9f5ec) and Deep Tide (#1a2744)",
+        "treatment": "Horizontal scroll sequence transitioning from crisp light ivory panels to rich deep tide panels for high visual cadence.",
+        "text_contrast": "Dynamic contrast per panel (Ink on Ivory, Ivory on Deep Tide)"
+      },
+      "standard_section": {
+        "surface": "Luminous Ivory (#f7f2e8) with Sindoor Red accents",
+        "treatment": "Editorial two-column grid on bright ivory background with large italicized display text.",
+        "text_contrast": "Deep Ink (#0f172a)"
+      },
+      "chapters_grid": {
+        "surface": "Rich Tide (#1a2744) with Golden Border Glow",
+        "treatment": "Interactive chapter cards with subtle scale hover, gold borders, and adjacent blank-page preview card in ivory.",
+        "text_contrast": "Ivory (#fdfbf7)"
+      },
+      "join_list_form": {
+        "surface": "Vibrant Sunlit Ivory (#fdfbf7)",
+        "treatment": "Bright conversion section with gold-underlined form fields, Sindoor Red submit highlights, and warm background.",
+        "text_contrast": "Deep Ink (#0f172a)"
+      }
+    },
+    "chapter_one_page": {
+      "hero": "Deep Tide (#14213a) hero with vibrant harbour dusk background gradient and golden eyebrow.",
+      "story_and_artist": "Luminous Warm Ivory (#f7f2e8) section with rich portrait frame borders and high-contrast typography.",
+      "on_the_water_and_evening": "Rich Dusk Indigo (#121a2d) with interactive event details grid and cassette line art.",
+      "faq_and_join_list": "Bright Ivory (#fdfbf7) accordion FAQ and email signup."
+    },
+    "our_story_page": {
+      "hero_held_note": "Deep Dusk (#121a2d) hero featuring animated 'Held Note' text reveal and golden vertical stroke.",
+      "pravaha_house_and_why": "Bright Ivory (#f7f2e8) background showcasing Pravaha House story and values in deep ink typography."
+    }
+  },
+  "bilingual_eyebrows_system": {
+    "design_concept": "Each chapter heading features a two-tiered bilingual eyebrow that acts as a miniature version of the main hero masthead.",
+    "top_tier_devanagari": "Small Devanagari text rendered in 'Rozha One' (var(--font-deva)), font size 0.95rem, gold/deep-gold color, with an optional subtle 1px golden shirorekha underline effect.",
+    "bottom_tier_english": "Uppercase English subtitle in 'Cormorant SC' (var(--font-sc)), font size 0.75rem, letter-spacing 0.3em, tracking-widest.",
+    "rendering_component": "ChapterHead component (/app/frontend/src/components/ChapterHead.jsx) renders eyebrow_deva above eyebrow_en with Framer Motion masked reveal."
+  },
+  "colors": {
+    "background_ink": "#121a2d",
+    "container_tide": "#1a2744",
+    "surface_ivory": "#f7f2e8",
+    "surface_bright_white": "#fdfbf7",
+    "gold_primary": "#e5b869",
+    "gold_deep": "#8f6527",
+    "sindoor_red": "#d13824",
+    "amethyst_sheen": "#d8beed",
+    "teal_sheen": "#76c7c0",
+    "text_dark_ink": "#0f172a",
+    "text_bright_ivory": "#faf6ed",
+    "text_muted": "#8a8f99",
+    "border_gold_glow": "rgba(229, 184, 105, 0.35)",
+    "ambient_gold_gradient": "radial-gradient(ellipse at 50% 0%, rgba(229, 184, 105, 0.18), transparent 70%)"
+  },
+  "typography": {
+    "devanagari_font": "Rozha One, Noto Serif Devanagari, serif",
+    "heading_font": "Cormorant Garamond, Georgia, serif",
+    "sc_font": "Cormorant SC, Cormorant Garamond, serif",
+    "body_font": "Instrument Sans, Helvetica Neue, sans-serif"
+  },
+  "bilingual_eyebrows_mapping": {
+    "Home": {
+      "Chapter_I_Premise": {
+        "devanagari": "प्रस्तावना",
+        "english": "A new initiative from Pravaha House"
+      },
+      "Chapter_II_NowShowing": {
+        "devanagari": "अध्याय : एक",
+        "english": "Kathaa Live presents · Chapter One"
+      },
+      "Chapter_III_Unfolds": {
+        "devanagari": "कथा-क्रम",
+        "english": "How a Kathaa evening unfolds"
+      },
+      "Chapter_IV_Standard": {
+        "devanagari": "मानक",
+        "english": "The Kathaa Standard"
+      },
+      "Chapter_V_Chapters": {
+        "devanagari": "अध्यायाः",
+        "english": "The Chapters"
+      },
+      "Chapter_VI_Partnerships": {
+        "devanagari": "सहभागिता",
+        "english": "Partnerships"
+      },
+      "Chapter_VII_JoinList": {
+        "devanagari": "नामांकन",
+        "english": "Join the list"
+      }
+    },
+    "ChapterOnePage": {
+      "Hero": {
+        "devanagari": "कथा लाइव प्रस्तुत गर्दछ",
+        "english": "Chapter One · The 2000s, Retold"
+      },
+      "Chapter_I_Story": {
+        "devanagari": "कथा",
+        "english": "The story"
+      },
+      "Chapter_II_Artist": {
+        "devanagari": "कलाकार",
+        "english": "The artist"
+      },
+      "Chapter_III_Water": {
+        "devanagari": "जल-यात्रा",
+        "english": "On the water"
+      },
+      "Chapter_IV_Evening": {
+        "devanagari": "सन्ध्या",
+        "english": "The evening"
+      },
+      "Chapter_V_FAQ": {
+        "devanagari": "जिज्ञासा",
+        "english": "Questions people ask"
+      },
+      "Chapter_VI_JoinList": {
+        "devanagari": "नामांकन",
+        "english": "Join the list"
+      }
+    },
+    "OurStoryPage": {
+      "Chapter_I_HeldNote": {
+        "devanagari": "दीर्घ स्वर",
+        "english": "The held note"
+      },
+      "Chapter_II_PravahaHouse": {
+        "devanagari": "प्रवाह हाउस",
+        "english": "Pravaha House"
+      },
+      "Chapter_III_WhyStarted": {
+        "devanagari": "आरम्भ",
+        "english": "Why we started"
+      },
+      "Chapter_IV_JoinList": {
+        "devanagari": "नामांकन",
+        "english": "Join the list"
+      }
+    }
+  },
+  "component_path": [
+    "/app/frontend/src/components/ChapterHead.jsx",
+    "/app/frontend/src/components/LogoMark.jsx",
+    "/app/frontend/src/components/Nav.jsx",
+    "/app/frontend/src/components/home/Premise.jsx",
+    "/app/frontend/src/components/home/NowShowing.jsx",
+    "/app/frontend/src/components/home/Unfolds.jsx",
+    "/app/frontend/src/components/home/Sections.jsx",
+    "/app/frontend/src/components/home/Prologue.jsx",
+    "/app/frontend/src/pages/Home.jsx",
+    "/app/frontend/src/pages/ChapterOne.jsx",
+    "/app/frontend/src/pages/OurStory.jsx",
+    "/app/frontend/src/index.css"
+  ],
+  "image_urls": [
+    {
+      "category": "placeholders_note",
+      "description": "Existing imagery remains placeholders until written approval per specifications."
+    }
+  ],
+  "motion_and_effects": {
+    "smooth_scroll": "Lenis smooth scroll with lerp 0.08 and momentum weight",
+    "reveals": "Framer Motion line-by-line masked reveals and staggered word drops",
+    "bilingual_eyebrow_animation": "Animate Devanagari eyebrow fade-in with 1px golden shirorekha underline draw",
+    "marquee": "react-fast-marquee running subtle golden editorial excerpts in low-contrast typography",
+    "hero_parallax": "Subtle 2.5D float on hero year rewind counter and masthead title"
+  },
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": {
+    "testing_attributes": "All interactive elements and key headings MUST retain data-testid attributes",
+    "no_backend_changes": "Front-end SPA only; preserve forms and ticket link logic",
+    "content_restrictions": "CRITICAL: Never use words yacht, party, charity, fundraiser, donation, or name the vessel",
+    "accessibility": "Ensure high text contrast ratios (4.5:1 for body, 3:1 for headers); support prefers-reduced-motion"
+  }
+}

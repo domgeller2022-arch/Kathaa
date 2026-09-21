@@ -4,10 +4,10 @@ import { ChapterHead } from "@/components/ChapterHead";
 import { Reveal } from "@/components/Reveal";
 
 const PAGES = [
-  ["I", "The Arrival", "The evening begins before the music does."],
-  ["II", "The Telling", "The artist, in their own words: where the songs came from."],
-  ["III", "The Performance", "Then the music, heard differently."],
-  ["IV", "The Afterword", "The part of the night people talk about next week."],
+  ["I", "आगमन", "The Arrival", "The evening begins before the music does."],
+  ["II", "कथा वाचन", "The Telling", "The artist, in their own words: where the songs came from."],
+  ["III", "प्रस्तुति", "The Performance", "Then the music, heard differently."],
+  ["IV", "उपसंहार", "The Afterword", "The part of the night people talk about next week."],
 ];
 
 export const Unfolds = () => {
@@ -51,16 +51,17 @@ export const Unfolds = () => {
   }, []);
 
   return (
-    <section className="section--tight" data-chapter="III" data-testid="unfolds-section">
+    <section className="section--tight page-section" data-chapter="III" data-testid="unfolds-section">
       <div className="wrap">
-        <ChapterHead numeral="III" title="How a Kathaa evening unfolds" />
+        <ChapterHead numeral="III" devanagari="कथाको क्रम" title="How a Kathaa evening unfolds" />
       </div>
       <div ref={root} className={`unfolds ${horizontal ? "is-horizontal" : ""}`}>
         <div ref={track} className="unfold-track wrap">
-          {PAGES.map(([n, title, line]) => (
+          {PAGES.map(([n, devanagari, title, line]) => (
             <Reveal key={n} className="unfold-page" data-testid={`unfold-${title.toLowerCase().replace(/\s/g, "-")}`}>
               <p className="unfold-num" aria-hidden="true">{n}</p>
-              <h3 className="unfold-title">{title}</h3>
+              <p className="unfold-deva" lang="ne" data-testid={`unfold-${n.toLowerCase()}-devanagari`}>{devanagari}</p>
+              <h3 className="unfold-title" data-testid={`unfold-${n.toLowerCase()}-title`}>{title}</h3>
               <p className="unfold-line">{line}</p>
             </Reveal>
           ))}
