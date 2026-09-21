@@ -1,0 +1,21 @@
+{
+  "summary": "Frontend-only end-to-end verification of KATHAA marketing site across desktop (1440) and mobile (390) viewports for /, /chapter-one, /our-story, /privacy, /terms and an unknown route (/nothing). All required data-testid elements are present, nav & thread become visible after the intro (both carry is-visible), masthead renders कथा with lang='ne', tagline is correct, sections appear in the expected order, YearRewind resolves to '2000s' by end of scroll, Unfolds are laid out horizontally on desktop (x positions 172,1180,2188,3196) and stack vertically on mobile with no horizontal overflow (scrollWidth == innerWidth == 390). Join-the-list form: submission without consent is blocked by the required checkbox (no success), submission with consent shows the exact thank-you copy. Footer legal, mailto, no facebook link, instagram placeholder present, privacy/terms hrefs, and acknowledgement all correct. Nav hrefs correct (nav-join='/#list'). Chapter One page: title correct, share-actions with page-join-list, share-whatsapp (https://wa.me/?text=...), add-to-calendar href '/kathaa-chapter-one.ics' with download attribute; the ICS file returns 200 and contains 'DTSTART:20261211T074000Z'. All 6 vessel-image slots exist, event-video present, evening details (6:40pm / Cash bar on board. No BYO alcohol. / Opening soon) correct, know-before-panel and 4 FAQ items present. Clicking faq-question-1 sets aria-expanded=true, shows faq-answer-1 'By 6:40pm.', re-click collapses it. Our Story page: held-note, pravaha-house-section, founders-story text \"[FOUNDERS' STORY — to be written by the directors]\", our-story-chapter-one-link → /chapter-one. Privacy/Terms render with h1 headings and TOC on desktop. Unknown route renders not-found-page with 'This page hasn't been written yet.' and back-home-link → /. No forbidden words (yacht, party, charity, fundraiser, donation, flood, Opera House, Harbour Bridge, ABN, Inception, $) present in rendered text on any page (the only '$' occurrence found via TreeWalker was inside an inline PostHog analytics <script>, which is not rendered text — no visible occurrence). No console errors and no page errors captured across all navigations.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "site.js exposes flags 'published' and 'artistRevealed' both = true which are declared in the brief as MUST be false for brand-only launch prior to written approval — confirm the team has that written approval before launch.",
+    "PostHog analytics inline script includes a '$' character in JS source; not user-facing, but be aware when auditing string content by DOM walking (innerText excludes it correctly)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped per request)", "frontend": "100%"},
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "All UI acceptance criteria in the request passed on first run. Lenis smooth-scroll behaves correctly with page.evaluate(window.scrollTo, ...) + ~1s waits for GSAP reveals. Home nav-join uses href='/#list' (in-page anchor) — treated as expected (scrolls to #list). Mobile menu opens/closes via nav-menu-button and Escape key. ICS file served at /kathaa-chapter-one.ics with correct DTSTART. No console errors."
+}
