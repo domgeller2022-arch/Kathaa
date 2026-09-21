@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FORM_ENDPOINT } from "@/config/site";
 import { ChapterHead } from "@/components/ChapterHead";
+import { eyebrows } from "@/config/eyebrows";
 import { Reveal } from "@/components/Reveal";
 
 export const JoinList = ({ numeral = "VII" }) => {
@@ -31,8 +32,13 @@ export const JoinList = ({ numeral = "VII" }) => {
 
   return (
     <section className="section" id="list" data-chapter={numeral} data-testid="join-list-section">
-      <div className="wrap">
-        <ChapterHead numeral={numeral} title="Be the first to hear the next chapter." />
+      <div className="wrap join-layout">
+        <ChapterHead
+          numeral={numeral}
+          sanskrit={eyebrows.home.joinList.sa}
+          eyebrow={eyebrows.home.joinList.en}
+          title="Be the first to hear the next chapter."
+        />
         {status === "done" ? (
           <p className="form-success" role="status" data-testid="join-list-success">
             Thank you. You'll hear from us when the next chapter is ready.

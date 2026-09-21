@@ -45,7 +45,8 @@ export const Thread = () => {
       raf = 0;
       const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       const p = Math.min(1, window.scrollY / max);
-      if (drawRef.current) drawRef.current.style.transform = `scaleY(${mapProgress(p)})`;
+      if (drawRef.current)
+        drawRef.current.style.clipPath = `inset(0 0 ${(1 - mapProgress(p)) * 100}% 0)`;
       nodeRefs.current.forEach((el, i) => {
         if (el) el.classList.toggle("is-passed", p >= fracs.current[i] - 0.005);
       });

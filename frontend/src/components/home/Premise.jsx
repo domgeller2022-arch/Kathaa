@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import { gsap, prefersReducedMotion } from "@/lib/motion";
-import { Reveal, Words } from "@/components/Reveal";
+import { Words } from "@/components/Reveal";
+import { BilingualEyebrow } from "@/components/ChapterHead";
+import { eyebrows } from "@/config/eyebrows";
 
 const LINES = [
   "Most nights out give you the songs.",
@@ -32,9 +34,11 @@ export const Premise = () => {
   return (
     <section className="section" data-chapter="I" data-testid="premise-section">
       <div className="wrap">
-        <Reveal as="p" className="eyebrow" y={12}>
-          A new initiative from Pravaha House
-        </Reveal>
+        <BilingualEyebrow
+          sanskrit={eyebrows.home.premise.sa}
+          english={eyebrows.home.premise.en}
+          testId="premise-heading"
+        />
         <div className="manifesto" ref={ref} data-testid="manifesto">
           {LINES.map((line) => (
             <p key={line}>

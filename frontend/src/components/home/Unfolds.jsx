@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { gsap, prefersReducedMotion } from "@/lib/motion";
 import { ChapterHead } from "@/components/ChapterHead";
 import { Reveal } from "@/components/Reveal";
+import { eyebrows } from "@/config/eyebrows";
 
 const PAGES = [
-  ["I", "The Arrival", "The evening begins before the music does."],
-  ["II", "The Telling", "The artist, in their own words: where the songs came from."],
-  ["III", "The Performance", "Then the music, heard differently."],
-  ["IV", "The Afterword", "The part of the night people talk about next week."],
+  ["I", "आगमन", "The Arrival", "The evening begins before the music does."],
+  ["II", "कथावाचन", "The Telling", "The artist, in their own words: where the songs came from."],
+  ["III", "प्रस्तुतिः", "The Performance", "Then the music, heard differently."],
+  ["IV", "उपसंहारः", "The Afterword", "The part of the night people talk about next week."],
 ];
 
 export const Unfolds = () => {
@@ -53,13 +54,18 @@ export const Unfolds = () => {
   return (
     <section className="section--tight" data-chapter="III" data-testid="unfolds-section">
       <div className="wrap">
-        <ChapterHead numeral="III" title="How a Kathaa evening unfolds" />
+        <ChapterHead
+          numeral="III"
+          sanskrit={eyebrows.home.unfolds.sa}
+          title="How a Kathaa evening unfolds"
+        />
       </div>
       <div ref={root} className={`unfolds ${horizontal ? "is-horizontal" : ""}`}>
         <div ref={track} className="unfold-track wrap">
-          {PAGES.map(([n, title, line]) => (
+          {PAGES.map(([n, sanskrit, title, line]) => (
             <Reveal key={n} className="unfold-page" data-testid={`unfold-${title.toLowerCase().replace(/\s/g, "-")}`}>
               <p className="unfold-num" aria-hidden="true">{n}</p>
+              <p className="unfold-sa" lang="sa">{sanskrit}</p>
               <h3 className="unfold-title">{title}</h3>
               <p className="unfold-line">{line}</p>
             </Reveal>
