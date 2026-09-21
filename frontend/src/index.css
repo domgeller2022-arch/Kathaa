@@ -1574,6 +1574,11 @@ html[data-page-theme="ivory"] .nav-menu-btn {
     min-height: max(42rem, 100svh);
   }
 }
+@media (max-width: 359px) {
+  .scroll-cue {
+    bottom: 6rem;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;

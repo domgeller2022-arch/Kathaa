@@ -1,0 +1,27 @@
+{
+  "summary": "Focused retest of iteration_2 follow-ups (frontend only, no backend). Verified: (1) after adding position:relative to html, no Lenis/Framer 'non-static container' console warnings remain across Home load, scroll, navigate to /chapter-one, and return; Lenis instance is still mounted (window.__lenis truthy) after navigation and smooth-scroll to y=800 works. (2) ChapterOne now renders unique data-testids for both ShareRow instances — counts are exactly 1 for share-actions, share-actions-bottom, page-join-list, page-join-list-bottom, share-whatsapp, share-whatsapp-bottom, add-to-calendar, add-to-calendar-bottom; wa.me hrefs identical at both, ics href '/kathaa-chapter-one.ics' at both; both join-list buttons scroll to #list (scrollY within ~24px of #list absTop). (3) prefers-reduced-motion=reduce (emulated at page level): window.__lenis is FALSE (guard works), .marquee-track computed animationName='none', marquee toggle button not rendered, .masthead-float computed transform stays 'none' after scrolling 400px, all 8 .eyebrow-deva elements visible, .unfold-page positions stack vertically (x=173 constant, y increases 4349→4877→5405→5891 — no horizontal pin), scrollToId('list') on ChapterOne still lands on list (scrollY 7310 vs list top 7309.76). (4) width=320 mobile: document.scrollWidth==innerWidth==320 on both Home and ChapterOne (no horizontal overflow); no .eyebrow-deva clipped (scrollWidth<=clientWidth for all 8); no h1/h2/h3 overflows viewport on either page; JoinList form fully rendered and visible in viewport at 320 (confirmed via screenshot — inputs, checkbox, and 'JOIN THE LIST' submit button all in bounds; note: real testids are join-list-first-name/email/consent/submit, not join-first-name variants). Only benign console output: 2x GSAP 'You have Reduced Motion enabled…' notices (informational, expected when RM emulated). Zero console errors overall.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Prologue hero (mobile 320)", "issue": "hero-location and scroll-cue overlap on 320px viewport. Measured rects: hero-location {left:20,right:167,top:625} vs scroll-cue {left:146,right:300,top:620} — horizontal overlap of ~21px and top edges within 5px. On 390px it fit fine in iteration_2, but at 320px the two bottom-anchored labels collide. Requested case in this review explicitly asked for no overlap.", "selector": ".hero-location / .scroll-cue", "priority": "MEDIUM"}
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Fix hero-location vs scroll-cue collision at ≤320px (e.g. stack vertically under a max-width:359px media query, shorten the location label at that breakpoint, or move scroll-cue up so bottoms don't share the same row)."
+  ],
+  "critical_code_review_comments": [
+    "site.js flags published/artistRevealed still true — pre-launch brand-only requirement remains unconfirmed (carried from iteration_1/2, deliberately unchanged per handoff note).",
+    "GSAP prints 'Reduced Motion enabled' warning when prefers-reduced-motion=reduce; benign but noisy. Could be silenced by setting gsap.config({trialWarn:false}) or by gating GSAP init behind the same reduced-motion guard already used for Lenis/Framer."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped per request)", "frontend": "~95% (3 of 4 scoped checks fully pass; width-320 hero overlap is the single miss)"},
+  "test_credentials": "N/A (public frontend, no auth). /app/memory/test_credentials.md remains an empty template as expected.",
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Scoped iteration_3 covered: (a) console warning after position:relative on html, (b) suffixed ShareRow duplicate-testid fix on /chapter-one, (c) prefers-reduced-motion behavior end-to-end, (d) width=320 layout. Only remaining defect is the mobile 320px hero label collision between .hero-location (SYDNEY, AUSTRALIA · LIVE EXPERIENCES) and .scroll-cue ('Scroll →'). JoinList real testids are join-list-first-name / join-list-email / join-list-consent / join-list-submit / join-list-form / join-list-success. Lenis is exposed as window.__lenis and is properly removed under RM. Framer motion values on Prologue/StoryMarquee correctly short-circuit under useReducedMotion. Preview URL https://sydney-harbour.preview.emergentagent.com used throughout.",
+  "rca of the issue": "At viewport ≤320px, both .hero-location (position:absolute; left:clamp(1.25rem,5vw,3rem)≈20px; bottom:2rem) and .scroll-cue (position:absolute; right:1.25rem≈20px; bottom:2rem) sit on the same baseline. The location text 'SYDNEY, AUSTRALIA / LIVE EXPERIENCES' rendered width is ~147px, and the scroll-cue block starts at left≈146px, so their bounding boxes intersect (21px horizontal overlap, tops within 5px). The iteration_2 pass at 390px hid the issue because the extra 70px of viewport left a comfortable gap. Mitigation options: (1) add @media (max-width:359px){ .scroll-cue{position:static;text-align:right;margin:1rem 1.25rem 1rem auto} .hero-location{position:static;margin:0 1.25rem 1rem} } inside .prologue so both cues stack under the masthead; (2) or move .scroll-cue to top:auto; bottom:5rem at that breakpoint so it clears .hero-location vertically."
+}
