@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { ScrollTrigger } from "@/lib/motion";
+import { ScrollTrigger, prefersReducedMotion } from "@/lib/motion";
 import { useIntro } from "@/components/Providers";
 
 /**
@@ -17,6 +17,7 @@ export const Thread = () => {
   const drawRef = useRef(null);
   const nodeRefs = useRef([]);
   const [nodes, setNodes] = useState([]);
+  const [scrolling, setScrolling] = useState(false);
   const fracs = useRef([]);
   const posRef = useRef([]);
 
@@ -82,7 +83,32 @@ export const Thread = () => {
     };
   }, [pathname]);
 
-  const visible = introDone || pathname !== "/";
+  // The rail is a reading aid, not furniture: it shows while the page is
+  // moving and fades out once it settles. Reduced-motion users keep it on
+  // permanently rather than watching it blink in and out.
+  useEffect(() => {
+    if (prefersReducedMotion()) {
+      setScrolling(true);
+      return undefined;
+    }
+    let t = 0;
+    const wake = () => {
+      setScrolling(true);
+      clearTimeout(t);
+      t = setTimeout(() => setScrolling(false), 900);
+    };
+    window.addEventListener("scroll", wake, { passive: true });
+    window.addEventListener("wheel", wake, { passive: true });
+    window.addEventListener("touchmove", wake, { passive: true });
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("scroll", wake);
+      window.removeEventListener("wheel", wake);
+      window.removeEventListener("touchmove", wake);
+    };
+  }, []);
+
+  const visible = (introDone || pathname !== "/") && scrolling;
   return (
     <div className={`thread ${visible ? "is-visible" : ""}`} aria-hidden="true" data-testid="thread">
       <div className="thread-track" />

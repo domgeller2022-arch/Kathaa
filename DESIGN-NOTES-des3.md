@@ -12,41 +12,39 @@ site is effectively monochrome ivory-on-navy whatever the background does.
 Vibrancy comes from chromatic *range*, and sophistication comes from the
 discipline with which that range is spent.
 
-## One family, one direction
+## The ramp — navy-green to off-white
 
-Superseded 22 Sep: the four-hue chapter palette (marigold / laligurans /
-violet / teal) is gone. Jumping between unrelated hues page to page read as
-discord rather than progression.
+Superseded 22 Sep: the single-green ramp only travelled L* 10 → 33 across
+the dark half, which is why it read as nothing happening. The page now
+sweeps **hue as well as brightness** — navy-green at the masthead, through
+navy blue, into off-white at the invitation.
 
-The page now runs a single **luminance ramp in one blue-green family**. It
-starts at deep navy-green behind the masthead and lightens as you scroll,
-turning into the light at The Kathaa Standard and arriving near-white at the
-invitation. Each section's gradient *ends on the next section's start
-colour*, so adjacent sections meet seamlessly whatever their heights — and
-section heights vary a lot here, with a 150vh rewind stage and a pinned
-horizontal scroll.
+Solved rather than eyeballed, against three constraints at once:
+lightness rises at every section; every stop clears AA for body, secondary
+AND accent; each section's gradient ends on the next one's start colour.
 
-| | ground | type | secondary |
+| section | ground | L* | type |
 | --- | --- | --- | --- |
-| Hero | `#08201e` | ivory | — |
-| I Premise | `#08201e → #0c2825` | ivory 14.3–13.2:1 | `#9fb5b1` 7.9–7.2:1 |
-| II Now Showing | `#0c2825 → #123430` | ivory 13.2–11.4:1 | 7.2–6.2:1 |
-| III Unfolds | `#123430 → #1a433d` | ivory 11.4–9.3:1 | 6.2–5.1:1 |
-| IV The Standard | `#dce8e5 → #e2ece9` | ink 14.2–14.8:1 | `#4c5f5b` 5.4–5.6:1 |
-| V The Chapters | `#e2ece9 → #e9f2f0` | ink 14.8–15.6:1 | 5.6–6.0:1 |
-| VI Partnerships | `#e9f2f0 → #eff6f4` | ink 15.6–16.2:1 | 6.0–6.2:1 |
-| VII Join the list | `#eff6f4 → #f7fbfa` | ink 16.2–17.1:1 | 6.2–6.5:1 |
-| Footer | `#f7fbfa` | ink | 6.5:1 |
+| Hero | `#08201e` | 10 | ivory |
+| I Premise | `#08201e → #0f373e` | 10 → 21 | ivory |
+| II Now Showing | `#0f373e → #1a4e67` | 21 → 31 | ivory |
+| III Unfolds | `#1a4e67 → #215e8c` | 31 → 38 | ivory |
+| IV The Standard | `#215e8c → #296ba5` | 38 → 44 | ivory |
+| V The Chapters | `#5b8bae → #84a5ba` | 56 → 66 | near-black |
+| VI Partnerships | `#84a5ba → #afc1cc` | 66 → 77 | near-black |
+| VII Join the list | `#afc1cc → #cfd8dd` | 77 → 86 | near-black |
+| Footer | `#cfd8dd → #eef2f3` | 86 → 95 | near-black |
 
-**Why the turn is a step, not a fade.** Mid-luminance greens around
-`#2a5a53` fail *both* ivory (6.6:1, and 3.4:1 for secondary) and ink
-(2.4:1) — there is no readable text colour there. So the ramp steps over
-that zone in one move, at the III/IV boundary, where it reads as the story
-turning into the light rather than as a glitch. Everywhere else the change
-is continuous.
+**The one discontinuity, and why it has to be there.** Around L* 45–55 no
+text colour works: ivory falls below AA above ~45, near-black falls below
+it under ~53. The ramp crosses that band in a single move at the IV/V
+boundary — 12 L*, the same size as the steps either side of it, so the
+ground reads as continuing while the type flips once.
 
-Accents follow the half: `--mint #7fd4c9` on the dark (9.8:1 at the top),
-`--teal-deep #0e5b55` on the light (6.3:1 at the turn).
+On the light tier, body, secondary and accent are all near-black
+(`#0b1218` / `#12202a` / `#05202f`). Anything greyer fails against the top
+of V. Secondary text differentiates by size and weight there, not by
+lightness.
 
 ## The thread carries the palette
 

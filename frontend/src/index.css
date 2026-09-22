@@ -16,9 +16,9 @@
   --accent-deep: var(--gold-deep);
 
   /* One family, light to dark. The ramp lives in the section rules below. */
-  --mint: #7fd4c9;       /* accent on the dark half — 9.8:1 at the top */
-  --teal-deep: #0e5b55;  /* accent on the light half — 6.3:1 at the turn */
-  --ink-warm: #0e1a18;   /* type on the light half; warmer than pure ink */
+  --mint: #bff0e8;       /* accent on the dark tier */
+  --teal-deep: #05202f;  /* accent on the light tier */
+  --ink-warm: #0b1218;   /* type on the light tier */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --font-deva: "Rozha One", "Noto Serif Devanagari", serif;
   --font-sc: "Cormorant SC", "Cormorant Garamond", Georgia, serif;
@@ -160,18 +160,20 @@ button {
 }
 .cursor-dot {
   display: block;
-  width: 8px;
-  height: 8px;
-  margin: -4px 0 0 -4px;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
   border-radius: 50%;
   background: var(--accent);
   transition:
     transform 0.28s var(--ease),
     opacity 0.28s var(--ease);
 }
+/* Hover behaviour unchanged — just proportionally larger, since the dot
+   it grows from is now 14px rather than 8px. */
 .cursor.is-active .cursor-dot {
-  transform: scale(4);
-  opacity: 0.55;
+  transform: scale(3.4);
+  opacity: 0.5;
 }
 
 /* The thread */
@@ -184,7 +186,7 @@ button {
   z-index: 40;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 1.2s var(--ease);
+  transition: opacity 0.55s var(--ease);
 }
 .thread.is-visible {
   opacity: 1;
@@ -627,23 +629,68 @@ html[data-page-theme="ivory"] .nav-menu-btn {
   font-size: clamp(1.1rem, 1.6vw, 1.4rem);
   color: var(--smoke);
 }
+/* ── The cue, as a pager ──────────────────────────────────────────────
+   Fixed rather than parked in the hero, so it holds the same spot on
+   every screen and can be clicked all the way down the page. It hides
+   itself once the reader scrolls by hand, and at the last section. */
 .scroll-cue {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
+  position: fixed;
+  right: clamp(1.25rem, 4vw, 3rem);
+  bottom: clamp(1.5rem, 4vh, 2.5rem);
+  z-index: 70;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem 0.25rem;
+  min-height: 44px;
   font-family: var(--font-sc);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: var(--smoke);
+  color: var(--accent);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition:
+    opacity 0.6s var(--ease),
+    transform 0.6s var(--ease),
+    color 0.4s var(--ease);
 }
-@media (min-width: 1024px) {
-  .scroll-cue {
-    left: auto;
-    right: 3rem;
-    transform: none;
-  }
+.scroll-cue.is-shown {
+  opacity: 0.92;
+  pointer-events: auto;
+  transform: none;
+}
+.scroll-cue:hover,
+.scroll-cue:focus-visible { opacity: 1; }
+
+/* A line that falls and resets — the thread, beginning again. */
+.scroll-cue-arrow {
+  position: relative;
+  display: block;
+  width: 1px;
+  height: 26px;
+  background: currentColor;
+  opacity: 0.55;
+  overflow: hidden;
+}
+.scroll-cue-arrow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  animation: cue-fall 2.1s var(--ease) infinite;
+}
+@keyframes cue-fall {
+  0%   { transform: translateY(-100%); }
+  55%  { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+.scroll-cue:hover .scroll-cue-arrow::after { animation-duration: 1.2s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue-arrow::after { animation: none; }
+  .scroll-cue { transition: opacity 0.2s linear; }
 }
 
 /* Premise */
@@ -1357,92 +1404,78 @@ html[data-page-theme="ivory"] .nav-menu-btn {
 .eyebrow--ink { color: var(--accent-deep); }
 
 /* ── The ramp ──────────────────────────────────────────────────────────
-   One family, one direction. The page starts at deep navy-green and
-   lightens as you scroll, turning at The Kathaa Standard and arriving
-   near-white at the invitation. No hue jumps: every ground is the same
-   blue-green, only lighter, so the change reads as dawn rather than as
-   four unrelated rooms.
+   Navy-green at the masthead, sweeping through navy blue and into
+   off-white at the invitation. Hue moves as well as brightness, so the
+   change registers instead of reading as one flat green.
 
-   Each section's gradient ENDS on the next section's start colour, so
-   adjacent sections meet seamlessly whatever their heights.
+   Solved rather than eyeballed. Constraints:
+     - lightness RISES at every section (L* 10 -> 95, ~10 per step)
+     - every stop clears WCAG AA for body, secondary AND accent
+     - each section's gradient ends on the next one's start colour
 
-   Mid-luminance greens fail both ivory and ink, so the ramp steps over
-   that zone in one move at the III/IV boundary — the turn into the light.
-   Dark half: ivory 14.3-9.3:1, smoke 7.9-5.1:1.
-   Light half: ink 14.2-17.1:1, smoke 5.4-6.5:1. */
+   There is an unavoidable band around L* 45-55 where no text colour
+   works: ivory fails above ~45, near-black fails below ~53. The ramp
+   crosses it in one move at the IV/V boundary — a 12 L* step, the same
+   size as the others, so it does not read as a jump; only the text
+   colour flips there. */
 .section,
 .section--tight { position: relative; }
 .section > *,
 .section--tight > * { position: relative; z-index: 1; }
 
-[data-chapter="I"]   { background: linear-gradient(180deg, #08201e, #0c2825); }
-[data-chapter="II"]  { background: linear-gradient(180deg, #0c2825, #123430); }
-[data-chapter="III"] { background: linear-gradient(180deg, #123430, #1a433d); }
-[data-chapter="IV"]  { background: linear-gradient(180deg, #dce8e5, #e2ece9); }
-[data-chapter="V"]   { background: linear-gradient(180deg, #e2ece9, #e9f2f0); }
-[data-chapter="VI"]  { background: linear-gradient(180deg, #e9f2f0, #eff6f4); }
-[data-chapter="VII"] { background: linear-gradient(180deg, #eff6f4, #f7fbfa); }
+[data-chapter="I"]   { background: linear-gradient(180deg, #08201e, #0f373e); }
+[data-chapter="II"]  { background: linear-gradient(180deg, #0f373e, #1a4e67); }
+[data-chapter="III"] { background: linear-gradient(180deg, #1a4e67, #215e8c); }
+[data-chapter="IV"]  { background: linear-gradient(180deg, #215e8c, #296ba5); }
+[data-chapter="V"]   { background: linear-gradient(180deg, #5b8bae, #84a5ba); }
+[data-chapter="VI"]  { background: linear-gradient(180deg, #84a5ba, #afc1cc); }
+[data-chapter="VII"] { background: linear-gradient(180deg, #afc1cc, #cfd8dd); }
 
-/* The dark half keeps ivory type and a light secondary. */
+/* Dark tier — ivory type. Worst case 4.50:1 at the foot of IV. */
 [data-chapter="I"],
 [data-chapter="II"],
-[data-chapter="III"] {
-  --accent: var(--mint);
-  --smoke: #9fb5b1;
+[data-chapter="III"],
+[data-chapter="IV"] {
+  --accent: #bff0e8;
+  --smoke: #e2eaec;
   color: var(--page);
 }
 
-/* From the turn onward the type goes to ink and the secondary darkens. */
-[data-chapter="IV"],
+/* Light tier — near-black type. Worst case 4.54:1 at the head of V.
+   Differentiation here comes from size and weight, not from greying the
+   secondary out: anything lighter fails against the top of V. */
 [data-chapter="V"],
 [data-chapter="VI"],
 [data-chapter="VII"] {
-  --accent: var(--teal-deep);
-  --smoke: #4c5f5b;
-  color: var(--ink-warm);
+  --accent: #05202f;
+  --smoke: #12202a;
+  color: #0b1218;
 }
-[data-chapter="IV"] :is(h1,h2,h3,.chapter-title,.display,.lead,.standard-line,.manifesto p),
-[data-chapter="V"] :is(h1,h2,h3,.chapter-title,.display,.lead,.standard-line),
-[data-chapter="VI"] :is(h1,h2,h3,.chapter-title,.display,.lead),
-[data-chapter="VII"] :is(h1,h2,h3,.chapter-title,.display,.lead,.form-success) {
-  color: var(--ink-warm);
-}
-[data-chapter="IV"] .smoke, [data-chapter="V"] .smoke,
-[data-chapter="VI"] .smoke, [data-chapter="VII"] .smoke,
-[data-chapter="IV"] .body, [data-chapter="V"] .body,
-[data-chapter="VI"] .body, [data-chapter="VII"] .body,
-[data-chapter="IV"] .hint, [data-chapter="V"] .hint,
-[data-chapter="VI"] .hint, [data-chapter="VII"] .hint,
-[data-chapter="IV"] .standard-note { color: var(--smoke); }
+[data-chapter="V"] :is(h1,h2,h3,.chapter-title,.display,.lead,.standard-line,.form-success),
+[data-chapter="VI"] :is(h1,h2,h3,.chapter-title,.display,.lead,.standard-line),
+[data-chapter="VII"] :is(h1,h2,h3,.chapter-title,.display,.lead,.form-success) { color: #0b1218; }
+[data-chapter="V"] :is(.smoke,.body,.hint,.standard-note,.media-caption),
+[data-chapter="VI"] :is(.smoke,.body,.hint,.media-caption),
+[data-chapter="VII"] :is(.smoke,.body,.hint) { color: var(--smoke); }
+[data-chapter="V"] .k-btn,
+[data-chapter="VI"] .k-btn,
+[data-chapter="VII"] .k-btn { color: #0b1218; border-color: var(--accent); }
+[data-chapter="V"] .k-btn:hover, [data-chapter="VI"] .k-btn:hover, [data-chapter="VII"] .k-btn:hover,
+[data-chapter="V"] .k-btn:focus-visible, [data-chapter="VI"] .k-btn:focus-visible,
+[data-chapter="VII"] .k-btn:focus-visible { color: #eef2f3; }
+[data-chapter="VII"] .field input { color: #0b1218; }
 
-[data-chapter="IV"] .k-btn, [data-chapter="V"] .k-btn,
-[data-chapter="VI"] .k-btn, [data-chapter="VII"] .k-btn {
-  color: var(--ink-warm);
-  border-color: var(--accent);
-}
-[data-chapter="IV"] .k-btn:hover, [data-chapter="V"] .k-btn:hover,
-[data-chapter="VI"] .k-btn:hover, [data-chapter="VII"] .k-btn:hover,
-[data-chapter="IV"] .k-btn:focus-visible, [data-chapter="V"] .k-btn:focus-visible,
-[data-chapter="VI"] .k-btn:focus-visible, [data-chapter="VII"] .k-btn:focus-visible { color: #f7fbfa; }
-[data-chapter="VII"] .field input { color: var(--ink-warm); }
-
-/* Cards sit down into their ground on the dark half, and lift off it on
-   the light half. */
 .chapter-card { background: rgba(0, 0, 0, 0.22); }
-[data-chapter="V"] .chapter-card {
-  background: rgba(255, 255, 255, 0.55);
-  color: var(--ink-warm);
-}
-[data-chapter="V"] .chapter-card h3 { color: var(--ink-warm); }
-.blank-page { background: #fbfdfc; }
+[data-chapter="V"] .chapter-card { background: rgba(255, 255, 255, 0.5); color: #0b1218; }
+[data-chapter="V"] .chapter-card h3 { color: #0b1218; }
+.blank-page { background: #fbfdfd; }
 
-/* Unfolds panels step through the same family rather than sitting on
-   four unrelated hues. */
-.unfold-page:nth-child(1) { background: #0e2c28; }
-.unfold-page:nth-child(2) { background: #133530; }
-.unfold-page:nth-child(3) { background: #183e37; }
-.unfold-page:nth-child(4) { background: #1d4740; }
-.unfold-page { --accent: var(--mint); --smoke: #9fb5b1; border-top: 0; }
+/* Unfolds panels ride the same sweep rather than sitting on flat colour. */
+.unfold-page:nth-child(1) { background: #164459; }
+.unfold-page:nth-child(2) { background: #1a4e67; }
+.unfold-page:nth-child(3) { background: #1e5676; }
+.unfold-page:nth-child(4) { background: #215e8c; }
+.unfold-page { --accent: #bff0e8; --smoke: #e2eaec; border-top: 0; }
 @media (min-width: 1024px) {
   .unfolds.is-horizontal .unfold-page { border-left: 0; }
 }
@@ -1477,8 +1510,8 @@ html[data-page-theme="ivory"] .nav-menu-btn {
    Facebook, Instagram and WhatsApp on a phone. */
 :root { --thread-x: 20px; }
 @media (min-width: 1024px) { :root { --thread-x: 48px; } }
-.thread-numeral { left: 14px; }
-@media (min-width: 1024px) { .thread-numeral { left: 20px; } }
+.thread-numeral { left: 16px; }
+@media (min-width: 1024px) { .thread-numeral { left: 24px; } }
 
 /* ── The shirorekha draws itself ───────────────────────────────────────
    Rozha One carries its own headline stroke in the glyphs. The gold line
@@ -1635,11 +1668,21 @@ html[data-page-theme="ivory"] .nav-menu-btn {
 /* ── Thread numerals in Devanagari ────────────────────────────────────
    Devanagari digits need a touch more room and sit differently on the
    baseline than Roman numerals did. */
+/* Rozha One does not style its Devanagari digits — they render identical
+   to Noto's flat monoline forms, with none of the high-contrast character
+   its letters have. At 18px in a dim margin they simply read as generic
+   numerals. Size, weight of colour and letterspacing are what make them
+   legible AS Devanagari. */
 .thread-numeral {
   font-family: var(--font-deva);
   font-style: normal;
-  font-size: 1.15rem;
+  font-size: 1.85rem;
   line-height: 1;
+  letter-spacing: 0.02em;
+  opacity: 0.9;
+}
+@media (min-width: 1024px) {
+  .thread-numeral { font-size: 2rem; }
 }
 
 /* ── Both ends of the ramp ─────────────────────────────────────────────
@@ -1652,15 +1695,15 @@ body { background: #08201e; }
 /* And the footer is the ramp's last stop, not a return to night — going
    back to dark after arriving in the light undoes the whole journey. */
 .footer {
-  background: #f7fbfa;
-  color: #4c5f5b;
+  background: linear-gradient(180deg, #cfd8dd, #eef2f3);
+  color: #12202a;
   border-top-color: rgba(14, 91, 85, 0.25);
 }
 .footer a,
 .footer span,
 .footer-links a,
-.footer-links span { color: var(--ink-warm); }
+.footer-links span { color: #0b1218; }
 .footer .logo-deva { color: var(--ink-warm); }
 .footer .logo-sc { color: var(--teal-deep); }
 .footer .k-link { background-image: linear-gradient(var(--teal-deep), var(--teal-deep)); }
-.footer-ack { color: #4c5f5b; }
+.footer-ack { color: #12202a; }

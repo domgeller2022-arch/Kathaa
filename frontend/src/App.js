@@ -3,6 +3,7 @@ import { IntroProvider, SmoothScroll, ScrollManager } from "@/components/Provide
 import { Thread } from "@/components/Thread";
 import { Cursor, Grain } from "@/components/Cursor";
 import { Nav } from "@/components/Nav";
+import { ScrollCue } from "@/components/ScrollCue";
 import Home from "@/pages/Home";
 import ChapterOne from "@/pages/ChapterOne";
 import OurStory from "@/pages/OurStory";
@@ -21,6 +22,7 @@ function App() {
         <Cursor />
         <Thread />
         <Nav />
+        <ScrollCue />
         <main id="main">
           <Routes>
             <Route path="/" element={<Home />} />

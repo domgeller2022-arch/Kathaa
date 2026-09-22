@@ -24,9 +24,22 @@ export const IntroProvider = ({ children }) => {
 export const SmoothScroll = () => {
   useEffect(() => {
     if (prefersReducedMotion()) return undefined;
-    // lerp 0.08 was slower than Lenis's own default and read as sluggish.
-    // 0.16 keeps the glide but lets the page track the wheel closely.
-    const lenis = new Lenis({ lerp: 0.16, wheelMultiplier: 1.05, touchMultiplier: 1.6 });
+    // Measured before tuning: the page holds a flat 16.7ms frame time while
+    // scrolling with zero long frames, so this was never a performance
+    // problem — it is the easing curve.
+    //
+    // lerp is exponential smoothing: it always approaches, never arrives,
+    // which is what reads as "floaty but somehow not smooth". Duration mode
+    // tweens each input over a fixed curve instead — snappy off the mark,
+    // gliding into the stop. syncTouch hands mobile back to native inertia,
+    // which no easing model beats.
+    const lenis = new Lenis({
+      duration: 0.95,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      wheelMultiplier: 1,
+      touchMultiplier: 1.6,
+      syncTouch: true,
+    });
     window.__lenis = lenis;
     lenis.on("scroll", ScrollTrigger.update);
     const raf = (time) => lenis.raf(time * 1000);

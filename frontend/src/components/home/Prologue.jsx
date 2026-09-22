@@ -26,14 +26,14 @@ export const Prologue = () => {
 
     if (prefersReducedMotion()) {
       gsap.set(q(".shirorekha"), { scaleX: 1 });
-      gsap.fromTo(q(".masthead, .scroll-cue"), { opacity: 0 }, { opacity: 1, duration: 0.8, onComplete: finishIntro });
+      gsap.fromTo(q(".masthead"), { opacity: 0 }, { opacity: 1, duration: 0.8, onComplete: finishIntro });
       return undefined;
     }
 
     const ctx = gsap.context(() => {
       gsap.set(q(".ltr"), { opacity: 0, y: 30 });
       gsap.set(q(".masthead-sc"), { opacity: 0, letterSpacing: "0.8em" });
-      gsap.set(q(".masthead-tagline, .scroll-cue"), { opacity: 0 });
+      gsap.set(q(".masthead-tagline"), { opacity: 0 });
       const threadX = isDesktop() ? 48 - window.innerWidth / 2 : 0;
       const tl = gsap.timeline({ defaults: { ease: EASE } });
       tl.to(q(".shirorekha"), { scaleX: 1, duration: 1 })
@@ -43,7 +43,7 @@ export const Prologue = () => {
         .add(finishIntro)
         .to(q(".drop-line"), { opacity: 0, duration: 0.5 })
         .to(q(".masthead-sc"), { opacity: 1, letterSpacing: "0.35em", duration: 1.1 }, "-=1.6")
-        .to(q(".masthead-tagline, .scroll-cue"), { opacity: 1, duration: 0.8 }, "-=0.6");
+        .to(q(".masthead-tagline"), { opacity: 1, duration: 0.8 }, "-=0.6");
 
       const skip = () => {
         if (tl.progress() < 1) tl.progress(1);
@@ -72,9 +72,6 @@ export const Prologue = () => {
           {TAGLINE}
         </p>
       </div>
-      <p className="scroll-cue" aria-hidden="true">
-        Scroll
-      </p>
     </section>
   );
 };
